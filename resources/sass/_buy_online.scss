@@ -1,0 +1,154 @@
+/* TASTO CARRELLO */
+
+#pages_menu > li.cart {
+    @media (min-width: 680px) {
+        display: none;
+    }
+}
+
+#pages_menu > li.cart_detail { 
+    margin-left: 15px; 
+    position: absolute;
+    right: 3%;
+    top: 50%;
+    transform: translate(0,-50%);
+}
+    #pages_menu > li.cart_detail a { 
+        font-weight: bold; 
+        border: 0 !important;
+        text-decoration: none !important;
+
+    }
+        #pages_menu > li.cart_detail a:before {
+            content: url(/imgs/layout/icons/cart.svg);
+            margin-right: 10px;
+            display: inline-block;
+            position: relative;
+            top: 3px;
+        }
+            #pages_menu > li.cart_detail a.cart_not_empty:before {
+                content: url(/imgs/layout/icons/cart-withitems.svg);
+            }
+        #pages_menu > li.cart_detail a:after {
+            content: '';
+            width: 100%;
+            height: 44px;
+            border: 3px dotted #FECB00;
+            border-radius: 25px;
+            display: block;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%,-50%);
+               -moz-transform: translate(-50%,-50%);
+                -ms-transform: translate(-50%,-50%);
+                 -o-transform: translate(-50%,-50%);
+                    transform: translate(-50%,-50%);
+        }
+
+
+        #pages_menu > li.cart_detail li:hover a::after, 
+        #pages_menu > li.cart_detail a:hover::after, 
+        #pages_menu > li.cart_detail a.active::after { 
+            border-color: var(--color-red);
+        }
+
+
+/* BUY ONLINE MOBILE */
+#buy_online { 
+    width: 63px;
+    height: 44px;
+    border: 3px solid #FECB00;
+    border-width: 3px 3px 3px 0;
+    border-radius: 0 22px 22px 0;
+    box-sizing: border-box;
+    display: block; 
+    position: absolute;
+    top: 26px;
+    left: 0;
+    z-index: 60;
+    transition: border-color .5s;   
+
+    span {
+        display: none;
+    }
+    
+    &::before {
+        content: url(/imgs/layout/icons/cart.svg);
+        margin-top: 3px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+    }
+
+    @media (min-width: 681px) {
+        right: 3%;
+        left: unset;
+        top: 55px;
+        border-radius: 50%;
+        width: 45px;
+        border-width: 3px;
+
+    }
+
+
+    @media (min-width: 1024px) {
+        top: 70px;
+        position: absolute;
+        width: auto !important;
+        display: inline-flex;
+        align-items: center;
+        border-radius: 22px;
+        padding: 0.5em 20px;
+        
+        span {
+            font-weight: bold; 
+            display: block;
+            color: #FFF;
+            white-space: nowrap;
+        }
+
+        &::before {
+            position: relative;
+            left: unset;
+            top: unset;
+            transform: none;
+            margin-right: 10px;
+        }
+    }
+    
+}
+    #main_menu_toggler:checked ~ #buy_online {
+        border-color: #FFF;
+    }
+        #buy_online.cart_not_empty:before {
+            content: url(/imgs/layout/icons/cart-withitems.svg);
+        }
+    .negative #buy_online {
+
+        span {
+            color: #000;
+        }
+
+        &:before {
+            content: url(/imgs/layout/icons/cart-black.svg);
+        }
+
+        &.cart_not_empty:before {
+            content: url(/imgs/layout/icons/cart-black-withitems.svg);
+        }
+    }
+
+    .page_cart_detail {
+        #buy_online {
+            display: none;
+        }
+    }
+
+
+#pages_menu {
+    @media (min-width: 681px) {
+        padding-right: calc(3% + 50px);
+    }
+}

@@ -1,0 +1,264 @@
+#php_flag display_errors On
+#php_flag display_startup_errors On
+
+
+##########################################################
+# OTTIMIZZAZIONE SERVER
+
+<IfModule mod_deflate.c>
+    
+    # Abilita compressione gzip
+    SetOutputFilter DEFLATE
+
+    # Da non comprimere
+    SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png)$ no-gzip dont-vary
+    SetEnvIfNoCase Request_URI \.(?:exe|t?gz|zip|bz2|sit|rar)$ no-gzip dont-vary
+
+    # Compress HTML, CSS, JavaScript, Text, XML and fonts
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+    AddOutputFilterByType DEFLATE application/x-font
+    AddOutputFilterByType DEFLATE application/x-font-opentype
+    AddOutputFilterByType DEFLATE application/x-font-otf
+    AddOutputFilterByType DEFLATE application/x-font-truetype
+    AddOutputFilterByType DEFLATE application/x-font-ttf
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE font/opentype
+    AddOutputFilterByType DEFLATE font/otf
+    AddOutputFilterByType DEFLATE font/ttf
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE image/x-icon
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/xml
+
+    # Remove browser bugs (only needed for really old browsers)
+    BrowserMatch ^Mozilla/4 gzip-only-text/html
+    BrowserMatch ^Mozilla/4\.0[678] no-gzip
+    BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+    Header append Vary User-Agent
+
+</IfModule>
+
+<IfModule mod_headers.c>
+    
+    # Abilita keep alive
+    Header set Connection keep-alive
+
+    # Header Utf 8
+    AddDefaultCharset utf-8
+    AddCharset utf-8 .htm .html .css .js .woff .woff2
+
+    # cache per risorse compresse
+    <FilesMatch "\.(js|css|xml|gz|html)$">
+        Header append Vary: Accept-Encoding
+    </FilesMatch>
+    
+    # 1 settimana (js e css in caso di modifiche vengono comunque ricompattati con nuovo nome bypassando la cache)
+    <FilesMatch "\.(js|css)(\?)*$">
+        Header set Cache-Control "max-age=604800"
+    </FilesMatch>
+    
+    # 1 settimana
+    #<FilesMatch "\.(flv|gif|jpg|jpeg|png|ico|swf|pdf|txt|svg)$">
+    #    Header set Cache-Control "max-age=604800"
+    #</FilesMatch>
+    
+    # 1 giorno
+    #<FilesMatch "\.file_public(.*)$">
+    #    Header set Cache-Control "max-age=86400"
+    #</FilesMatch>
+
+    # 1 minuto
+    #<FilesMatch "\.(html|htm|php)$">
+    #    Header set Cache-Control "max-age=60"
+    #</FilesMatch>
+    
+</IfModule>
+
+
+##########################################################
+# MIME TYPE AGGIUNTIVI
+AddType application/vnd.ms-fontobject    .eot
+AddType application/x-font-opentype      .otf
+AddType image/svg+xml                    .svg
+AddType image/svg+xml                    .svgz
+AddType application/x-font-ttf           .ttf
+AddType application/font-woff            .woff
+AddType application/font-woff            .woff2
+AddType video/mp4                        .mp4 .m4v
+AddType video/ogg                        .ogv
+AddType video/webm                       .webm
+
+
+########################################################## 
+# PROTEZIONE DA SPIDER / BOT
+<IfModule mod_rewrite.c>
+
+    RewriteCond %{HTTP_USER_AGENT} ^BlackWidow [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^ChinaClaw [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Custo [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^DISCo [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Download\ Demon [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^eCatch [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^EirGrabber [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^EmailSiphon [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^EmailWolf [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Express\ WebPictures [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^ExtractorPro [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^EyeNetIE [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^FlashGet [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^GetRight [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^GetWeb! [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Go!Zilla [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Go-Ahead-Got-It [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^GrabNet [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Grafula [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^HMView [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^HTTrack [NC,OR]
+    RewriteCond %{HTTP_USER_AGENT} HTTrack [NC,OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Image\ Stripper [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Image\ Sucker [OR]
+    RewriteCond %{HTTP_USER_AGENT} Indy\ Library [NC,OR]
+    RewriteCond %{HTTP_USER_AGENT} ^InterGET [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Internet\ Ninja [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^JetCar [OR]
+        #RewriteCond %{HTTP_USER_AGENT} ^JOC \ Web\ Spider [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^larbin [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^LeechFTP [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Mass\ Downloader [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^MIDown\ tool [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Mister\ PiX [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Navroad [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^NearSite [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^NetAnts [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^NetSpider [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Net\ Vampire [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^NetZIP [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Octopus [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Offline\ Explorer [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Offline\ Navigator [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^PageGrabber [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Papa\ Foto [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^pavuk [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^pcBrowser [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^RealDownload [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^ReGet [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^SiteSnagger [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^SiteSucker [NC,OR]
+    RewriteCond %{HTTP_USER_AGENT} SiteSucker [NC,OR]
+    RewriteCond %{HTTP_USER_AGENT} ^SmartDownload [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^SuperBot [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^SuperHTTP [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Surfbot [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^tAkeOut [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Teleport\ Pro [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^VoidEYE [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Web\ Image\ Collector [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Web\ Sucker [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^WebAuto [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^WebCopier [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^WebFetch [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^WebGo\ IS [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^WebLeacher [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^WebReaper [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^WebSauger [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Website\ eXtractor [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Website\ Quester [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^WebStripper [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^WebWhacker [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^WebZIP [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Wget [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Widow [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^WWWOFFLE [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Xaldon\ WebSpider [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^Zeus [OR]
+
+    RewriteCond %{HTTP_USER_AGENT} ^.*(Jakarta\ Commons).*$ [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^.*(EccolaBot).*$ [NC]
+
+    RewriteRule ^.* - [F,L]
+</IfModule>
+
+
+########################################################## 
+# URL
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+    
+    
+    ######################################################################################### 
+    # Redirect per correggere dominio.com --> www.dominio.com
+    # RewriteCond %{SERVER_ADDR} !^(46.231.30.5|192.168.1.129|127.0.0.1)$
+    RewriteCond %{HTTP_HOST} ^aipioppi.com [NC]
+    RewriteCond %{HTTPS}s ^on(s)|
+    RewriteRule ^ http%1://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L] 
+    
+    
+    ######################################################################################## 
+    # Navigazione forzata su HTTPS
+    RewriteCond %{HTTP_HOST} ^www.aipioppi.com [NC]
+    RewriteCond %{HTTPS} off
+    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
+
+    ######################################################################################### 
+    # SEMPRE SLASH FINALE (protegge da doppia url e auto-redirect di apache)
+    RewriteCond %{REQUEST_URI} !(/$|\.) 
+    RewriteRule (.*) %{REQUEST_URI}/ [R=301,L] 
+
+
+    ######################################################################################### 
+    # dispatcher assets (per gestire manualmente gli header di queste risorse)
+    RewriteCond %{THE_REQUEST} !/area_amministrazione/([^\s?]*) [NC]
+
+    RewriteCond %{THE_REQUEST} !/area_amministrazione/([^\s?]*) [NC]
+
+       
+
+
+    ######################################################################################### 
+    # PAGINE
+    
+    RewriteRule ^it/?$                                                                                          /? [R=301,L]
+
+
+    ########################################################## ROUTING
+    # richieste dirette proibite
+    RewriteCond %{REQUEST_URI} ^/pages/(.*)|/pages/|/pages|/pages/lang|/lang$
+    RewriteCond %{REQUEST_URI} ^!(/pages/not_found.php)
+    RewriteRule ^.* /pages/not_found.php
+    
+    RewriteCond %{REQUEST_URI} ^(/pages/|/pages/lang|/lang)
+    RewriteRule ^.* - [F,L]
+
+
+    # tutti i rewrite gestiti da un dispatcher centrale!
+    RewriteRule ^$    /index.php [L,QSA] 
+    RewriteCond %{REQUEST_FILENAME}  !-l
+    RewriteCond %{REQUEST_FILENAME}  !-d
+    RewriteCond %{REQUEST_FILENAME}  !-f
+    RewriteCond %{REQUEST_URI} !^/pages/
+    RewriteRule ^(.*)$    /index.php [L,QSA] 
+
+	
+    ########################################################## NOT FOUND
+	# 404
+	ErrorDocument 404 /pages/not_found.php
+
+</IfModule>
+
+# SP BEGIN php handler
+<IfModule mod_fcgid.c>
+          AddHandler fcgid-script .php .php5 .php7 .phtml
+          FcgidWrapper    /usr/local/cpanel/cgi-sys/sp-ea-php74 .php
+          FcgidWrapper    /usr/local/cpanel/cgi-sys/sp-ea-php74 .php5
+          FcgidWrapper    /usr/local/cpanel/cgi-sys/sp-ea-php74 .php7
+          FcgidWrapper    /usr/local/cpanel/cgi-sys/sp-ea-php74 .phtml
+</IfModule>
+# SP END php handler
+

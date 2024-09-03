@@ -1,0 +1,78 @@
+
+
+/* WIDGET
+*****************************************************************************************************/
+
+form .input_widget_label {
+    width: auto;
+    margin: 1.2em 0 0 0;
+    display: block;
+    float: none;
+    font-size: 11px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #666;
+}
+
+form .input_widget { position: relative; width: 70px; }
+    form .input_widget_label + .input_widget { margin-top: 5px; };
+    form .input_widget label { width: auto; }
+    form .input_widget input {
+        width: 70px;
+        height: 50px;
+        line-height: 44px;
+        padding: 0;
+        margin: 0;
+        border: 1px solid rgba(42,42,42,.3);
+        font-size: var(--text-big);
+        text-align: center;
+        -moz-appearance: textfield;
+        color: var(--color-base);
+    }
+
+        form .input_number_widget {
+            padding-right: 40px;
+ 
+            position: relative;
+            .spinner {
+                width: 35px;
+                height: 25px;
+                padding-left: 35px;
+                box-sizing: border-box;
+                display: none;
+                position: absolute;
+                right: 0;
+                cursor: default;
+                color: var(--color-base);
+                background-size: 40% auto;
+                background-repeat: no-repeat;
+                background-position: center center;
+                overflow: hidden;
+                border: 1px solid rgba(42, 42, 42, 0.3);
+                
+                &.sum {
+                    top: 0;
+                    background-image: url(../../assets/imgs/layout/ico_arrow_2.svg);
+                }
+                &.subtract {
+                    bottom: 0;
+                    border-top: 0;
+                    background-image: url(../../assets/imgs/layout/ico_arrow_down_2.svg);
+                }
+            }
+        }
+
+            .js form .input_number_widget .spinner { display: block; }
+
+            form .input_number_widget .spinner img {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+            }
+
+    form .input_number_widget input::-webkit-inner-spin-button
+    ,form .input_number_widget input::-webkit-outer-spin-button 
+    { 
+        -webkit-appearance: none; 
+    }

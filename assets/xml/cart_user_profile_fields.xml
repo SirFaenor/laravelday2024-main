@@ -1,0 +1,70 @@
+<!--
+/*
+ * 
+ *  // ATTRIBUTI //
+ *  name        -> valore che varrà usato per gli attributi "name" e "id"   [richiesto]
+ *  type        -> tipo di campo (vedi sotto)                               [richiesto]
+ *  obbl        -> il campo è obbligatorio? (0,1)
+ *  tabfield    -> nome della colonna nella tabella DB                      [richiesto]
+ *  maxlength   -> valore di maxlength (max per gli attributi number)
+ *  tabindex    -> valore di tabindex
+ * 
+ *  // TIPO DI CAMPO //
+ *  text        -> campi di tipo testo generici
+ *  number      -> campi di tipo testo con un dato che deve contenere numeri (ad esempio numero civico o CAP)
+ *  email       -> campo di tipo testo contenente un indirizzo email
+ *  antispam    -> campo di tipo email con name e id email
+ *  textarea    -> campo di tipo textarea (testo lungo)
+ *  checkbox    -> campo di tipo checkbox
+ *  select      -> campo di tipo select
+ *  hidden      -> campo di tipo hidden
+ *  redirect    -> campo di tipo hidden per inserire il redirect
+ *  privacy     -> realizza il checkbox e il link alla privacy
+ *  captcha     -> realizzo un captcha                                      ! richiede la classe/funzione per creare il captcha !
+ * 
+ */
+-->
+
+<form table="ordine">
+    <input name="nome"          type="text"     obbl="0"    tabfield="nome"         ></input>
+    <input name="cognome"       type="text"     obbl="0"    tabfield="cognome"      ></input>
+    <input name="email"         type="email"    obbl="1"    tabfield="email"        ></input>
+    <input name="email_confirm"         type="email"    obbl="1"    tabfield=""        ></input>
+    <!-- <input name="telefono"      type="tel"      obbl="1"    tabfield="telefono"     ></input> -->
+    <!-- <input name="password"      type="password"     obbl="1"    mailfield="false" compare_field="password_2" label="label_pass"        ></input>
+    <input name="password_2"    type="password"     obbl="1"    mailfield="false" label="label_pass_confirm"        ></input> -->
+
+
+    <!-- <input name="spedizione_custom_data"    type="text" obbl="0"    tabfield="custom_data"   mailfield="false" ignore_label="true" ></input>
+    <input name="sped_title_address"     type="text"     obbl="1"    tabfield="title_address" label="label_sped_title" obbl_if="spedizione_custom_data"    ></input>
+    <input name="sped_nome"     type="text"     obbl="1"    tabfield="nome" obbl_if="spedizione_custom_data"    ></input>
+    <input name="sped_cognome"     type="text"     obbl="1"    tabfield="cognome" obbl_if="spedizione_custom_data"    ></input>
+    <input name="sped_email"         type="email"    obbl="1"    tabfield="email" obbl_if="spedizione_custom_data"        ></input>
+    <input name="sped_telefono"      type="tel"      obbl="1"    tabfield="telefono" obbl_if="spedizione_custom_data"     ></input>
+    <input name="sped_indirizzo"     type="text"     obbl="1"    tabfield="indirizzo" obbl_if="spedizione_custom_data"    ></input>
+    <input name="sped_civico"        type="text"    obbl="1"    tabfield="civico" obbl_if="spedizione_custom_data"    ></input>
+    <input name="sped_citta"         type="text"     obbl="1"    tabfield="citta" obbl_if="spedizione_custom_data"        ></input>
+    <input name="sped_cap"           type="text"     obbl="1"    tabfield="cap" obbl_if="spedizione_custom_data"          ></input>
+    <input name="sped_id_provincia"  type="text"     obbl="0"    tabfield="id_provincia" label="label_sped_provincia" obbl_if="spedizione_custom_data_AND_!provincia"></input>
+    <input name="sped_provincia"     type="text"     obbl="0"    tabfield="provincia" obbl_if="spedizione_custom_data_AND_!id_provincia"></input>
+    <input name="sped_id_nazione"    type="text"     obbl="1"    tabfield="id_nazione"   label="label_sped_nazione" obbl_if="spedizione_custom_data"></input> -->
+
+    <!-- <input name="company_invoice_request"    type="text" obbl="0"    tabfield="company_invoice_request"   mailfield="false" ignore_label="true" ></input>
+    <input name="ragione_sociale" type="text"   obbl="0"  obbl_if="company_invoice_request"  tabfield="ragione_sociale" label="label_azienda"></input>
+    <input name="partita_iva" type="text"   obbl="0"  obbl_if="company_invoice_request"  tabfield="partita_iva" label="label_piva" match="^(([A-Za-z]{6}\d{2}[A-Za-z]\d{2}[A-Za-z]\d{3}[A-Za-z])|([a-zA-Z]{2})?(\d{11}))$"></input>
+    <input name="sdi" type="text"    obbl="0"  obbl_if="company_invoice_request"  tabfield="sdi"></input>
+    <input name="pec"         type="email"    obbl="0"  obbl_if="company_invoice_request"    tabfield="pec"        ></input>
+
+    <input name="shipping_address_id"  type="number"   obbl="0"    mailfield="false" tabfield="shipping_address_id"  label="shipping_address"></input>
+
+    <input name="note"          type="textarea" obbl="0"    tabfield="note"         label="label_note"></input> -->
+    <input name="privacy"       type="privacy"  obbl="1"    mailfield="false"  ignore_label="true"  ></input>
+    <input name="marketing_checkbox" type="checkbox"  obbl="0"    mailfield="false"  ignore_label="true"   tabfield="marketing_checkbox" ></input>
+    <input name="alcohol"       type="checkbox"  obbl="0"    mailfield="false"  ignore_label="true"  ></input>
+    <input name="takeaway"       type="checkbox"  obbl="0"    mailfield="false"  ignore_label="true"  tabfield="takeaway"   ></input>
+    <input name="table_number" type="checkbox"  obbl="0"    mailfield="false"  ignore_label="true"  tabfield="table_number"   ></input>
+    <input name="table_number_check" type="checkbox"  obbl="0"    mailfield="false"  ignore_label="true"  tabfield="table_number_check"   ></input>
+
+    <input name="id_cat"        type="number"   obbl="1"    mailfield="false" tabfield="cliente_id_cat"  ignore_label="true"    ></input>
+    <input name="redirect"      type="redirect" obbl="0"    mailfield="false" ignore_label="true"></input>
+</form>

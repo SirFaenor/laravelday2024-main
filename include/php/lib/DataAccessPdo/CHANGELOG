@@ -1,0 +1,7 @@
+2017/06/19
+-----------------------------------------------------------
+- non gestisce più i modelli, ha la stessa convenienza memorizzare a piacere le query esternamente e passarle al metodo customQuery )
+- il metodo select accetta come secondo parametro la modalità di fetch secondo le costanti PDO::FETCH_*
+- il metodo customQuery accetta come secondo parametro l'array per il binding in pdo, come terzo parametro la modalità di fetch (v. sopra)
+- il metodo customQuery ritorna direttamente valori all'esterno (in base al tipo di query) a meno di non esplicitare $fetchMode come false
+- eliminato il parametro "preserveId" per array di dati in ingresso (se c'è nell'array in ingresso,la colonna id viene considerata)

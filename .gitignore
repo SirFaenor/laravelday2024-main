@@ -1,0 +1,16 @@
+_x_*
+app_logs/**
+assets/min/*
+development/**
+**/css/style.all.min.*.css
+**/js/func.all.min.*.js
+include/php/lib/vendor/**
+\._*
+*\._*
+.DS_Store
+*.env
+.vscode
+.phpunit.result.cache
+.es10.siteground.eu.env
+adminer.php
+prepros.config

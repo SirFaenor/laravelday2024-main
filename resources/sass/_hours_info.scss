@@ -1,0 +1,372 @@
+
+.hours_info #page_content { 
+	padding-top: 0; 
+	position: relative;
+}
+
+.hours_info #openings_section {
+	padding-top: 299px;
+	padding-bottom: 70px;
+	font-size: 18px;
+	font-weight: 300;
+	text-align: center;
+	background: url(/imgs/layout/bg.png);
+	overflow: hidden;
+}
+	
+	.js .hours_info #openings_section { padding-top: 279px; }
+	.hours_info #openings_section strong { font-weight: bold; }
+	.hours_info #openings_section p img {
+		margin: 0 5px;
+		position: relative;
+		top: 10px;
+	}
+
+.hours_info #openings_slider_container { 
+	max-width: 1290px; 
+	padding-top: 70px;
+	padding-bottom: 70px;
+	margin: 0 auto;
+}
+		.hours_info #openings_slider li h4 {
+			margin: 0;
+			font-size: 18px;
+			font-weight: bold; 
+			text-transform: uppercase;
+		}
+		.hours_info #openings_slider li figure { margin: 0 35px; }
+			.hours_info #openings_slider li figure img { 
+				width: 100%;
+				display: block;
+			}
+
+.hours_info #openings_section .legenda_title {
+	width: 33.33%;
+	padding-right: 86px;
+	margin: 0;
+	box-sizing: border-box;
+	float: left;
+	font-size: 18px;
+	text-align: right;
+	color: #393939;
+}
+.hours_info #openings_section .legenda_text {
+	width: 66.66%;
+	float: right;
+	font-size: 16px;
+	text-align: left;
+}
+	.hours_info #openings_section .legenda_text > { 
+        
+        & * {
+            margin: 0; 
+        }
+		
+		& p.alert {
+			margin-top: 2em;
+            color: var(--color-error);
+		}
+	}
+	.hours_info #openings_section .legenda_text .info_title {
+		position: relative;
+		font-size: 18px;
+		color: #393939;
+	}
+		.hours_info #openings_section .legenda_text .info_title:before {
+			content: '';
+			width: 34px;
+			height: 34px;
+			border-radius: 50%;
+			display: block;
+			position: absolute;
+			top: 0;
+			left: -60px;
+		}
+		.hours_info #openings_section .legenda_text .info_title.open { color: #62A953; }
+			.hours_info #openings_section .legenda_text .info_title.open:before { background: #62A953; }
+
+.hours_info #info_section { 
+	max-width: 1440px;
+	padding-top: 80px;
+	padding-bottom: 125px;
+	overflow: hidden; 
+}
+
+	.hours_info #info_section .info_text { 
+		width: 50%;
+		width: calc(100% - 470px);
+		max-width: 620px;
+		float: left;
+		font-size: 18px;
+	}
+		.hours_info #info_section .info_text .title { 
+			margin: 30px 0 0 0;
+			color: #DE5558;
+		}
+
+		.hours_info #info_section .info_text img { 
+			margin: 0 22px 10px 0;
+			float: left; 
+		}
+
+	.hours_info #info_section .image { 
+		width: 330px;
+		margin-right: 45px;
+		float: right;
+		position: relative;
+		left: 20px;
+	}
+		.hours_info #info_section .image .figure { 
+			width: 100%;
+			display: block;
+		}
+		.hours_info #info_section .image .shape_1 { 
+			width: 300px;
+			position: absolute;
+			left: -54px;
+			top: -29px;
+			z-index: 15;
+			mix-blend-mode: multiply;
+		}
+		.hours_info #info_section .image .shape_2 { 
+			width: 205px;
+			position: absolute;
+			right: -45px;
+			bottom: -57px;
+			z-index: 15;
+			opacity: .8;
+		}
+
+
+.hours_info #arriving_section {
+	min-height: 640px;
+	padding-top: 90px;
+	padding-bottom: 30px;
+	text-align: center;
+	background: url(/imgs/content/hours-info/come-arrivare-bg.jpg) 50% 50% / cover no-repeat;
+}
+	.hours_info #arriving_section .title {
+		margin: 0 0 55px 0;
+		color: #FFF;
+	}
+
+	.hours_info #arriving_list {
+		display: flex;
+		justify-content: space-around;
+		color: #FFF;
+	}
+		.hours_info #arriving_list li {
+			width: 30%;
+			max-width: 360px;
+			line-height: 1.5;
+			padding: 0 20px;
+			display: inline-block;
+			box-sizing: border-box;
+			vertical-align: top;
+		}
+			.hours_info #arriving_list li h4 {
+				margin: 0 0 30px 0;
+				font-size: 28px;
+				font-weight: bold;
+				text-transform: lowercase;
+				color: #FECB00;
+			}
+			.hours_info #arriving_list li p { 
+				min-height: 7.5em;
+				margin: 0 0 1.5em 0;
+			}
+			.hours_info #arriving_list li .btn { text-transform: lowercase; }
+
+.hours_info #contacts_section {
+	padding-top: 75px;
+	padding-bottom: 52px;
+	font-size: 18px;
+	text-align: center;
+}
+	.hours_info #contacts_section .title {
+		margin: 0 0 8px 0;
+		color: #DE5558;
+	}
+
+	.hours_info #contacts_section #contacts_btns { margin-top: 40px; }
+		.hours_info #contacts_section #contacts_btns li {
+			margin: 0 15px;
+			display: inline-block;
+			vertical-align: top;
+			position: relative;
+		}
+			.hours_info #contacts_section #contacts_btns li .btn {
+				padding-left: 65px;
+				background-position: 25px 50%;
+				background-repeat: no-repeat;
+			}
+			.hours_info #contacts_section #contacts_btns li .btn.mail { background-image: url(/imgs/layout/icons/email.svg) }
+			.hours_info #contacts_section #contacts_btns li .btn.phone { 
+				background-position: 28px 50%;
+				background-image: url(/imgs/layout/icons/telephone.svg) 
+			}
+			.hours_info #contacts_section #contacts_btns li .btn.whatsapp { 
+				background-position: 28px 50%;
+				background-image: url(/imgs/layout/icons/whatsapp.png);
+				background-size: 23px auto;
+			}
+			.hours_info #contacts_section #contacts_btns li small {
+				width: 100%;
+				line-height: 1.25;
+				margin: 11px 0 0 0;
+				display: block;
+				position: absolute;
+				top: 100%;
+				left: 0;
+				font-size: 14px;
+				color: #DE5558;
+			}
+
+
+@media only screen and (max-width: 1200px){
+
+	.hours_info #openings_slider_container { max-width: 860px; }
+
+}
+
+@media only screen and (max-width: 1024px){
+
+	.hours_info #info_section .info_text { 
+		width: auto;
+		margin: 0 auto;
+		float: none;
+	}
+		.hours_info #info_section .info_text .title { margin-top: 0; }
+
+	.hours_info #info_section .image { 
+		margin: 75px auto 0 auto;
+		float: none;
+		left: 0;
+	}
+
+	.hours_info #arriving_section { 
+		padding-top: 50px; 
+		padding-bottom: 50px; 
+	}
+		.hours_info #arriving_section .title { margin-bottom: 25px; }
+		.hours_info #arriving_list { display: block; }
+			.hours_info #arriving_list li {
+				width: auto;
+				max-width: 480px;
+				margin: 0 auto;
+				padding: 0;
+				display: block;
+			}
+				.hours_info #arriving_list li + li { margin-top: 50px; }
+
+				.hours_info #arriving_list li h4 {
+					line-height: 1.25;
+					margin-bottom: 10px;
+					font-size: 24px;
+				}
+
+				.hours_info #arriving_list li p { min-height: 0; }
+
+}
+
+@media only screen and (max-width: 768px){
+
+	.hours_info #openings_slider_container { max-width: 430px; }
+
+	.hours_info #contacts_section { padding-bottom: 0; }
+		.hours_info #contacts_section #contacts_btns li {
+			max-width: 400px;
+			margin: 0 auto;
+			display: block;
+		}
+			.hours_info #contacts_section #contacts_btns li + li { margin-top: 25px; }
+			.hours_info #contacts_section #contacts_btns li .btn {
+				width: 100%;
+				padding-right: 65px;
+			}
+
+				.hours_info #contacts_section #contacts_btns li small {
+					position: relative;
+					top: 0;
+				}
+
+}
+
+@media only screen and (max-width: 680px){
+
+	.hours_info.negative #page_content { padding-top: 0; }
+
+	.hours_info .page_menu 
+	,.hours_info .page_menu.fixed 
+	{ display: none; }
+
+	.hours_info #openings_section 
+	,.js .hours_info #openings_section 
+	{ padding-top: 160px; }
+
+	.hours_info #openings_slider_container { 
+		max-width: 360px;
+		padding-top: 40px;
+		padding-bottom: 80px;
+	}
+
+		.hours_info #openings_slider li figure { margin: 0; }
+
+		.hours_info #openings_slider .nav { 
+			margin-top: 20px;
+			display: block;
+			top: 100%; 
+		}
+
+			.hours_info #openings_slider .nav.prev {
+				margin-right: 20px;
+				left: auto;
+				right: 50%;
+			}
+
+			.hours_info #openings_slider .nav.next {
+				margin-left: 20px;
+				right: auto;
+				left: 50%;
+			}
+
+	.hours_info #openings_section .legenda_title {
+	    width: auto;
+	    padding: 0 0 12px 0;
+	    float: none;
+	    text-align: left;
+	}
+
+	.hours_info #openings_section .legenda_text {
+	    width: auto;
+	    padding-left: 52px;
+	    float: none;
+	}
+
+		.hours_info #openings_section .legenda_text .info_title:before { left: -50px; }
+
+
+	.hours_info #info_section { padding-top: 50px; }
+	.hours_info #info_section .info_text { font-size: 15px; }
+
+	.hours_info #contacts_section { 
+		padding-top: 60px; 
+		font-size: 15px;
+	}
+}
+
+@media only screen and (max-width: 480px){
+
+	.hours_info #info_section { padding-bottom: 0; }
+	.hours_info #info_section .image { 
+		width: 100%;
+		margin-top: 0;
+		-webkit-transform: scale(.6879);
+		   -moz-transform: scale(.6879);
+			-ms-transform: scale(.6879);
+			 -o-transform: scale(.6879);
+				transform: scale(.6879);
+	}
+
+
+}
