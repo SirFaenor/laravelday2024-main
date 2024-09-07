@@ -47,7 +47,7 @@ $App->Page->open();
 				<a href="<?php $App->Lang->echoL('hours_info'); ?>">
 					<picture class="poster">
 		                <source srcset="/imgs/content/hours_info-poster-mobile.jpg" media="(max-width: 680px)">
-						<img src="/imgs/content/hours_info-poster-mobile.jpg" alt="<?php $App->Lang->echoT('alt_image'); ?>">
+						<img src="/imgs/content/hours_info-poster.jpg" srcset="/imgs/content/hours_info-poster.jpg" alt="<?php $App->Lang->echoT('alt_image'); ?>">
 					</picture>
 					<img class="icon" src="/imgs/content/hours_info-icon.png" alt="<?php $App->Lang->echoT('alt_image'); ?>">
 					<h3 class="format_title mode2"><?php $App->Lang->echoT('hours_info_title'); ?></h3>

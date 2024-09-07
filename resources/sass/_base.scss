@@ -766,19 +766,7 @@ body.page_cart #warning {display: none !important;}
     }
 
        
-            .js #logo a:after { 
-                content: '';
-                width: 100%;
-                height: 100%;
-                display: block;
-                position: absolute;
-                top: 0;
-                left: 0;
-                z-index: 5;
-                background: url(/imgs/layout/AIPIOPPI-logo-no-claim.svg) 0 0 / cover no-repeat;
-                transition: opacity .5s;
-                opacity: 0;
-            }
+           
             .js #logo.onscroll a:after { opacity: 1; }
 
         .js #logo.cloned {
