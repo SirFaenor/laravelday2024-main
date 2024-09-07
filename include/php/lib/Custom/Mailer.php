@@ -185,7 +185,7 @@ class Mailer extends \AtrioTeam\MailBuilder\MailBuilder {
                                         '.$this->style.'
                                         <div id="wrapper">
                                             <div id="wrapper_center">
-                                                <h1><img src="'.$this->serverName.'/assets/imgs/layout/logo_mail.png" alt="'.$this->arMailInfo['SITE_NAME'].'" style="width: 150px; max-width: 100%;"></h1>'.PHP_EOL;
+                                                <h1><img src="'.$this->serverName.'/imgs/layout/logo_mail.png" alt="'.$this->arMailInfo['SITE_NAME'].'" style="width: 150px; max-width: 100%;"></h1>'.PHP_EOL;
         endif;
         return $this->mailHead;
 

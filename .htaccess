@@ -191,20 +191,7 @@ AddType video/webm                       .webm
 <IfModule mod_rewrite.c>
 	RewriteEngine On
     
-    
-    ######################################################################################### 
-    # Redirect per correggere dominio.com --> www.dominio.com
-    # RewriteCond %{SERVER_ADDR} !^(46.231.30.5|192.168.1.129|127.0.0.1)$
-    RewriteCond %{HTTP_HOST} ^aipioppi.com [NC]
-    RewriteCond %{HTTPS}s ^on(s)|
-    RewriteRule ^ http%1://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L] 
-    
-    
-    ######################################################################################## 
-    # Navigazione forzata su HTTPS
-    RewriteCond %{HTTP_HOST} ^www.aipioppi.com [NC]
-    RewriteCond %{HTTPS} off
-    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
+   
 
     ######################################################################################### 
     # SEMPRE SLASH FINALE (protegge da doppia url e auto-redirect di apache)

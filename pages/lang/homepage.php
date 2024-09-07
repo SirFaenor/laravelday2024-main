@@ -3,8 +3,8 @@ require(HTML_INCLUDE_PATH.'/common.php');
 $App->Lang->loadTrads('homepage');
 $App->Lang->setActive('homepage');
 
-$App->Page->title($App->Lang->returnT("meta_title"));
-$App->Page->description($App->Lang->returnT("meta_description"));
+$App->Page->title('Laravel Day');
+$App->Page->description('');
 
 $App->Page->alternates($App->Lang->getAllAlternates());
 
@@ -20,7 +20,6 @@ $App->Page->open();
 			<h1 class="page_title"><?php $App->Lang->echoT('page_title'); ?></h1>
 			<div id="home_video" class="video_wrapper">
 				<div class="video_container">
-					<video src="/videos/ai_pioppi_osteria-parco-giochi.mp4" autoplay muted loop></video>
 				</div>
 			</div>
 		</header>

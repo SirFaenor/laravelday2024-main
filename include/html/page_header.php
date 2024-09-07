@@ -28,11 +28,11 @@
                 <?php require __DIR__.'/lang_menu.php'; ?>
             </div>
 
-            <!-- 
+            
             <a id="buy_online"<?php echo count($arCartButtonClasses) > 0 ? ' class="'.implode(' ',$arCartButtonClasses).'"' : ''; ?> href="<?php $App->Lang->echoL('cart_detail'); ?>">
                 <span><?php $App->Lang->echoT('nav_order_online'); ?></span>
             </a>
-            -->
+           
 
             <nav id="main_menu" data-animscroll data-as-delay="0" data-as-animation="fadeIn">
 
@@ -46,9 +46,7 @@ NAVIGAZIONE PRINCIPALE
                     <li class="tavern"><a<?php echo $activeLinkKey == 'tavern' ? ' class="active"' : ''; ?> href="#"><?php $App->Lang->echoT('nav_tavern'); ?></a></li>
                     <li class="story"><a<?php echo $activeLinkKey == 'story' ? ' class="active"' : ''; ?> href="#"><?php $App->Lang->echoT('nav_story'); ?></a></li>
                     <li class="hours_info"><a<?php echo $activeLinkKey == 'hours_info' ? ' class="active"' : ''; ?> href="#"><?php $App->Lang->echoT('nav_hours_info'); ?></a></li>
-                    <!-- 
                     <li class="cart"><a<?php echo count($arCartButtonClasses) > 0 ? ' class="'.implode(' ',$arCartButtonClasses).'"' : ''; ?> href="<?php $App->Lang->echoL('cart_detail'); ?>"><span><?php $App->Lang->echoT('nav_order_online'); ?></span></a></li>
-                    -->
                 </ul>
                 
 

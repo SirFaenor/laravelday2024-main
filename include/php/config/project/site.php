@@ -8,12 +8,12 @@ if(!defined("SITE_PROTOCOL")):
     define('SITE_PROTOCOL',(HAS_CERTIFICATE ? "https://" : "http://"));
 endif;
 
-$key = 'aipioppi';        /* valore univoco per l'impostazione dei cookies e delle sessioni */
-$domain = 'aipioppi.com';
-$host = defined("IS_LOCAL_SERVER") && IS_LOCAL_SERVER && !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'aipioppi.com';
+$key = 'laravel';        /* valore univoco per l'impostazione dei cookies e delle sessioni */
+$domain = 'laravel';
+$host = defined("IS_LOCAL_SERVER") && IS_LOCAL_SERVER && !empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
 
 $site = array(
-		        "name"          => 'Osteria ai Pioppi'
+		        "name"          => 'Laravel'
 		        ,"has_certificate" => HAS_CERTIFICATE
 		        ,"protocol"     => SITE_PROTOCOL
 				,"host" => $host
@@ -23,7 +23,7 @@ $site = array(
 				,"cookie_name" => $key.'_frontcookie'
 				,"cookie_cms_name" => $key.'_cmscookie'
 		        ,"color"        => '#F8CA14'
-		        ,"code"         => 'AIPIOPPI'
+		        ,"code"         => 'Laravel'
 
 
 		            
@@ -31,10 +31,10 @@ $site = array(
 		         * le caselle sono impostate come destinatari in maniera specifica
 		         * in vari punti del sito
 		         */
-		        ,"mail"         => array('osteriaaipioppi@gmail.com')
-				,"mail_orders" => 'osteriaaipioppi@gmail.com'
-				,"mail_fallback" => 'form@atrio.it'
-				,"mail_noreply" => 'noreply@aipioppi.com'
+		        ,"mail"         => array()
+				,"mail_orders" => ''
+				,"mail_fallback" => ''
+				,"mail_noreply" => ''
 
 				,"webservice_url" => getenv("WEBSERVICE_URL") ?: ''
 				,"webservice_token" => getenv("WEBSERVICE_TOKEN") ?: ''

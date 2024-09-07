@@ -194,7 +194,6 @@ endif;
                 <?php } ?>
             </div>
             <div class="legenda" data-animscroll data-as-delay="200ms" data-as-animation="fadeIn">
-                <!-- <a class="btn rounded red menu_btn" href="<?php $App->Lang->echoL('download_doc',array('osteria-ai-pioppi-menu.pdf')); ?>" target="_blank"><?php $App->Lang->echoT('download_menu'); ?></a> -->
                 <h5 class="legenda_title"><?php $App->Lang->echoT('legenda'); ?></h5>
                 <div class="legenda_text">
                     <span class="menu_info glutenfree"><?php $App->Lang->echoT('glutenfree'); ?></span>

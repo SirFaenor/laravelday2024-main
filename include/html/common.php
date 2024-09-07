@@ -331,25 +331,6 @@ $icon_v = '';   # versione delle icone
 $App->Page->link(array("rel" => "shortcut icon", "href"=> BASE_URL."/imgs/layout/favicons/favicon.ico".$icon_v));
 $App->Page->link(array("rel" => "icon", "sizes" => "16x16 32x32 64x64", "href"=> BASE_URL."/imgs/layout/favicons/favicon.ico".$icon_v));
 
-if($App->Config['modules']['multi_favicon'] === true):
-
-    $App->Page->link(array("rel" => "apple-touch-icon", "sizes" => "180x180", "href"=> BASE_URL."/imgs/layout/favicons/apple-touch-icon.png".$icon_v));
-    $App->Page->link(array("rel" => "image/png", "sizes" => "32x32", "href"=> BASE_URL."/imgs/layout/favicons/favicon-32x32.png".$icon_v));
-    $App->Page->link(array("rel" => "image/png", "sizes" => "194x194", "href"=> BASE_URL."/imgs/layout/favicons/favicon-194x194.png".$icon_v));
-    $App->Page->link(array("rel" => "image/png", "sizes" => "192x192", "href"=> BASE_URL."/imgs/layout/favicons/android-chrome-192x192.png".$icon_v));
-    $App->Page->link(array("rel" => "image/png", "sizes" => "16x16", "href"=> BASE_URL."/imgs/layout/favicons/favicon-16x16.png".$icon_v));
-
-    //$App->Page->link(array("rel" => "manifest", "href"=> BASE_URL."/imgs/layout/favicons/site.webmanifest".$icon_v));
-    $App->Page->link(array("rel" => "mask-icon", "color"=>$App->Config['site']['color'], "href"=> BASE_URL."/imgs/layout/favicons/safari-pinned-tab.svg".$icon_v));
-
-
-    $App->Page->meta(array("name"=>"msapplication-TileColor", "content"=>$App->Config['site']['color']));
-    $App->Page->meta(array("name"=>"msapplication-TileImage", "content"=>BASE_URL."/imgs/layout/favicons/mstile-144x144.png".$icon_v));
-    $App->Page->meta(array("name"=>"msapplication-config", "content"=>BASE_URL."/imgs/layout/favicons/browserconfig.xml".$icon_v));
-    $App->Page->meta(array("name"=>"theme-color", "content"=>$App->Config['site']['color']));
-
-endif;
-
 $App->Page->meta(array("name" => "viewport", "content" => "width=device-width,user-scalable=yes"));
 
 

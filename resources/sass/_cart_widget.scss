@@ -52,12 +52,12 @@ form .input_widget { position: relative; width: 70px; }
                 
                 &.sum {
                     top: 0;
-                    background-image: url(../../assets/imgs/layout/ico_arrow_2.svg);
+                    background-image: url(../../imgs/layout/ico_arrow_2.svg);
                 }
                 &.subtract {
                     bottom: 0;
                     border-top: 0;
-                    background-image: url(../../assets/imgs/layout/ico_arrow_down_2.svg);
+                    background-image: url(../../imgs/layout/ico_arrow_down_2.svg);
                 }
             }
         }

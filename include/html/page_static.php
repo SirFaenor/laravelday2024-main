@@ -32,8 +32,8 @@ try {
     $back       = isset($back) ? $back : 'back';
     $nav_homepage = isset($nav_homepage) ? $nav_homepage : 'Home';
 
-    $site_name = isset($site_name) ? $site_name : 'Osteria ai Pioppi';
-    $site_code = isset($site_code) ? $site_code : 'AIPIOPPI';
+    $site_name = isset($site_name) ? $site_name : 'Laravel Day';
+    $site_code = isset($site_code) ? $site_code : 'LaravelDay';
     $lgSuff = isset($lgSuff) ? $lgSuff : 'it';
 
     $footer = '';
