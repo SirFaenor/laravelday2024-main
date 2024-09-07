@@ -13,7 +13,7 @@ redirectStoreUnavailable();
  * 1. ISTANZIO IL FORM
  */
 $xml = $App->User->getid_cat() == 2  ? 'cart_user_profile_b2b_fields' : 'cart_user_profile_fields';
-$Form = $App->create('Form',array('form_name' => 'cart_user_data','path_to_xml_file' => ASSETS_PATH.'/xml/'.$xml.'.xml'));
+$Form = $App->create('Form',array('form_name' => 'cart_user_data','path_to_xml_file' => HTML_INCLUDE_PATH.'/xml/'.$xml.'.xml'));
 $Form->prepareInputs();
 
 $are_products_available = true;

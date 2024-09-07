@@ -36,7 +36,7 @@ $site = array(
 				,"mail_fallback" => 'form@atrio.it'
 				,"mail_noreply" => 'noreply@aipioppi.com'
 
-				,"webservice_url" => getenv("WEBSERVICE_URL") ?: 'https://webservice.aipioppi.com'
+				,"webservice_url" => getenv("WEBSERVICE_URL") ?: ''
 				,"webservice_token" => getenv("WEBSERVICE_TOKEN") ?: ''
 			);
 

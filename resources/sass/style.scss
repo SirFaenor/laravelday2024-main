@@ -2,26 +2,18 @@
  * Import css
  * Alcuni sono css standard da prima del refactoring
  */
-@import "../../assets/fonts/cera-pro/stylesheet";
-@import "../../assets/css/vendor/jquery-ui.min";
+@import "_fonts.scss";
+@import "../../css/vendor/jquery-ui.min";
 @import "_base.scss";
 @import "_form.scss";
 @import "_messenger.scss";
 @import "_cart_widget.scss";
 @import "_order_info_widget.scss";
-@import "../../assets/css/pages/text";
-@import "../../assets/css/animate.min";
-@import "../../assets/css/animate.custom";
+@import "../../css/animate.min";
+@import "../../css/animate.custom";
 @import "../js/vendor/fancyapps/jquery.fancybox.min";
-@import "../../assets/css/pages/homepage";
-@import "_park.scss";
-@import "_hours_info.scss";
-@import "../../assets/css/pages/videogallery";
-@import "_advices.scss";
+@import "_homepage.scss";
+
 
 @import "../js/vendor/slick/slick";
 
-@import "../../assets/css/pages/story";
-@import "../../assets/css/50_years";
-
-@import "_tavern.scss";

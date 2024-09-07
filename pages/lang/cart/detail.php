@@ -51,7 +51,7 @@ $_SESSION['modal_intro_text_accepted'] = $modal_intro_text_accepted;
 /**
  * Pagina riepilogo carrello
  */
-require(ASSETS_PATH.'/html/common.php');
+require(HTML_INCLUDE_PATH.'/common.php');
 $App->Lang->setActive("cart_detail");
 $App->Lang->loadTrads("products_global,cart_global,cart_detail");
 
@@ -128,7 +128,7 @@ $App->Page->open();
 ?>
 <div id="main_wrapper">
 
-<?php require ASSETS_PATH.'/html/page_header.php'; ?>
+<?php require HTML_INCLUDE_PATH.'/page_header.php'; ?>
 <main id="page_content">
     <section id="intro_section" data-animscroll data-as-delay="200ms" data-as-animation="fadeIn">
         
@@ -384,7 +384,7 @@ endif; // se prodotti
         </div>
     </div> <!-- refresh -->
 	</main><!-- #page_content -->
-	<?php require ASSETS_PATH.'/html/page_footer.php'; ?>
+	<?php require HTML_INCLUDE_PATH.'/page_footer.php'; ?>
 
 </div> <!-- #main_wrapper -->
 

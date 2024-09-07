@@ -99,7 +99,7 @@ new App($App);
 */
 define("DOCUMENT_ROOT", $App->Config["path"]["app_root"]);
 define("DATA_ROOT", $App->Config["path"]["data_root"]);
-define("ASSETS_PATH", $App->Config["path"]["app_root"].'/assets');
+define("HTML_INCLUDE_PATH", $App->Config["path"]["app_root"].'/include/html');
 define("PAGES_ROOT", $App->Config["path"]["app_root"].'/pages');
 define("LANGUAGE_ROOT", $App->Config["path"]["app_root"].'/pages/lang');
 define("BASE_URL", $App->Config["site"]["url"]);

@@ -32,4 +32,4 @@ try {
 	
 }
 
-require ASSETS_PATH.'/html/page_static.php';
+require HTML_INCLUDE_PATH.'/page_static.php';

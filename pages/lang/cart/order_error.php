@@ -36,7 +36,7 @@ $backLabel = isset($backLabel) ? $backLabel : 'back';
 /**
  * Html
  */
-require(ASSETS_PATH.'/html/common.php');
+require(HTML_INCLUDE_PATH.'/common.php');
 $App->Page->title($title);
 $App->Page->includeCss(BASE_URL.'/css/pages/cart_base.css');
 $App->Page->addClass('page_cart page_cart_error negative');
@@ -44,7 +44,7 @@ $App->Page->open();
 ?>
 <div id="main_wrapper">
 <?php
-require ASSETS_PATH.'/html/page_header.php';
+require HTML_INCLUDE_PATH.'/page_header.php';
 ?>
 
 <main id="page_content">
@@ -69,7 +69,7 @@ require ASSETS_PATH.'/html/page_header.php';
     </div>
 </main>
 
-<?php require ASSETS_PATH.'/html/page_footer.php'; ?>
+<?php require HTML_INCLUDE_PATH.'/page_footer.php'; ?>
 </div> <!-- #main_wrapper -->
 <?php
 $App->Page->close(); // chiude body e html

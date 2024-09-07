@@ -1,19 +1,19 @@
 <?php
 
 return array(
-                "name"      	=> "Osteria Ai Pioppi s.a.s. di Ferrin Bruno & C."
-                ,"name_short"   => "Osteria ai Pioppi"
-                ,"address"   	=> "Via VIII Armata, 76"
-                ,"zip"       	=> "31040"
-                ,"city"      	=> "Nervesa della battaglia"
-                ,"region"    	=> "Treviso"
-                ,"region_abbr"	=> "TV"
+                "name"      	=> "Laravel Day 2024"
+                ,"name_short"   => "Laravel Day 2024"
+                ,"address"   	=> ""
+                ,"zip"       	=> ""
+                ,"city"      	=> ""
+                ,"region"    	=> ""
+                ,"region_abbr"	=> ""
                 ,"country"   	=> "Italy"
-                ,"phone"     	=> array("+39 0422 773303", '+39 3663867608')
+                ,"phone"     	=> array('+39 000 0000000')
                 ,"fax"       	=> ""
-		        ,"mail"         => array('osteriaaipioppi@gmail.com')
+		        ,"mail"         => array('mail@mailbox.org')
 	            ,"data"      	=> array(
-	                                    'vat'   	=> '04048150264'
+	                                    'vat'   	=> '0000000000000'
 	                                    ,'capital'	=> ''
 	                                    ,'rea'		=> ''
 	                                    ,'tax_id'	=> ''

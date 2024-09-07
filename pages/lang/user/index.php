@@ -1,5 +1,5 @@
 <?php
-require(ASSETS_PATH.'/html/common.php');
+require(HTML_INCLUDE_PATH.'/common.php');
 $App->Lang->loadTrads('user,user_index');
 $App->Lang->setActive('user_area');
 
@@ -18,7 +18,7 @@ $App->Page->open();
 ?>
 <div id="main_wrapper">
 
-	<?php require ASSETS_PATH.'/html/page_header.php'; ?>
+	<?php require HTML_INCLUDE_PATH.'/page_header.php'; ?>
 	<main id="page_content">
 
         <section id="intro_section" data-animscroll data-as-delay="200ms" data-as-animation="fadeIn">
@@ -33,7 +33,7 @@ $App->Page->open();
         </section>
 
 	</main><!-- #page_content -->
-	<?php require ASSETS_PATH.'/html/page_footer.php'; ?>
+	<?php require HTML_INCLUDE_PATH.'/page_footer.php'; ?>
 </div>
 
 </div> <!-- #main_wrapper -->

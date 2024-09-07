@@ -1,5 +1,5 @@
 <?php
-require(ASSETS_PATH.'/html/common.php');
+require(HTML_INCLUDE_PATH.'/common.php');
 $App->Lang->loadTrads('tavern');
 $App->Lang->setActive('tavern');
 
@@ -91,7 +91,7 @@ $App->Page->open();
 ?>
 <div id="main_wrapper">
 
-	<?php require ASSETS_PATH.'/html/page_header.php'; ?>
+	<?php require HTML_INCLUDE_PATH.'/page_header.php'; ?>
 	<main id="page_content">
         <nav class="page_menu center_width" data-animscroll data-as-delay="200ms" data-as-animation="fadeIn">
             <a class="fluid_scroll" data-stop_before="50" href="#ordering_section"><?php $App->Lang->echoT('nav_ordering'); ?></a>
@@ -111,7 +111,7 @@ $App->Page->open();
         <section id="ordering_section">
             <h3 class="title format_title mode3 center_width" data-animscroll data-as-delay="200ms" data-as-animation="fadeIn"><?php $App->Lang->echoT('nav_ordering'); ?></h3>
 
-            <?php require ASSETS_PATH.'/html/order_info_widget.php' ?>
+            <?php require HTML_INCLUDE_PATH.'/order_info_widget.php' ?>
             
         </section>
 
@@ -251,7 +251,7 @@ endif;
 <?php endif; ?>
 
 	</main><!-- #page_content -->
-	<?php require ASSETS_PATH.'/html/page_footer.php'; ?>
+	<?php require HTML_INCLUDE_PATH.'/page_footer.php'; ?>
 
 </div> <!-- #main_wrapper -->
 <?php

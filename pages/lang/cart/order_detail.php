@@ -26,7 +26,7 @@ $orderDetailWidget = $response->getBody();
 /**
  * Html
  */
-require(ASSETS_PATH.'/html/common.php');
+require(HTML_INCLUDE_PATH.'/common.php');
 $App->Page->title($App->Lang->returnT("dati_ordine").' '.$Order->getordine_code());
 $App->Page->includeCss(BASE_URL.'/css/build/cart.css');
 $App->Page->addClass('page_order_detail negative');
@@ -34,7 +34,7 @@ $App->Page->open();
 ?>
 <div id="main_wrapper">
 <?php
-require ASSETS_PATH.'/html/page_header.php';
+require HTML_INCLUDE_PATH.'/page_header.php';
 ?>
 
 <main id="page_content">
@@ -59,7 +59,7 @@ require ASSETS_PATH.'/html/page_header.php';
     </div>
 </main>
 
-<?php require ASSETS_PATH.'/html/page_footer.php'; ?>
+<?php require HTML_INCLUDE_PATH.'/page_footer.php'; ?>
 </div> <!-- #main_wrapper -->
 <?php
 $App->Page->close(); // chiude body e html

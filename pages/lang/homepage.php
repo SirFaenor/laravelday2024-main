@@ -1,5 +1,5 @@
 <?php
-require(ASSETS_PATH.'/html/common.php');
+require(HTML_INCLUDE_PATH.'/common.php');
 $App->Lang->loadTrads('homepage');
 $App->Lang->setActive('homepage');
 
@@ -14,7 +14,7 @@ $App->Page->open();
 ?>
 <div id="main_wrapper">
 
-	<?php require ASSETS_PATH.'/html/page_header.php'; ?>
+	<?php require HTML_INCLUDE_PATH.'/page_header.php'; ?>
 	<main id="page_content">
 		<header class="content_header" data-animscroll data-as-delay="200ms" data-as-animation="fadeIn">
 			<h1 class="page_title"><?php $App->Lang->echoT('page_title'); ?></h1>
@@ -26,7 +26,7 @@ $App->Page->open();
 		</header>
 		
 		<div class="page_intro center_width s" data-animscroll data-as-delay="200ms" data-as-animation="fadeIn">
-			<p><?php $App->Lang->echoT('page_intro'); ?></p>
+			<!-- <p><?php $App->Lang->echoT('page_intro'); ?></p> -->
 		</div>
 		<a class="fluid_scroll goto_btn" href="#links_list" data-animscroll data-as-delay="200ms" data-as-animation="fadeIn">
 			<img src="/imgs/layout/arrow.svg" alt="<?php $App->Lang->echoT('go_to',array('object' => $App->Lang->returnT('site_sections'))); ?>">
@@ -63,22 +63,10 @@ $App->Page->open();
 					<h3 class="format_title mode2"><?php $App->Lang->echoT('park_title'); ?></h3>
 				</a>
 			</li>
-			<li class="story" data-animscroll data-as-delay="200ms" data-as-animation="fadeIn">
-				<a href="<?php $App->Lang->echoL('story'); ?>">
-					<picture class="poster">
-		                <source srcset="/imgs/content/story-poster-mobile.jpg" media="(max-width: 680px)">
-						<img src="/imgs/content/story-poster.jpg" srcset="/imgs/content/story-poster.jpg 1x,/imgs/content/story-poster@2x.jpg 2x" alt="<?php $App->Lang->echoT('alt_image'); ?>">
-					</picture>
-					<img class="icon" src="/imgs/content/story-icon.png" alt="<?php $App->Lang->echoT('alt_image'); ?>">
-					<h3 class="format_title mode2"><?php $App->Lang->echoT('story_title'); ?></h3>
-				</a>
-			</li>
 		</ul>
 
-		<?php require ASSETS_PATH.'/html/faqs_all.php'; ?>
-
 	</main><!-- #page_content -->
-	<?php require ASSETS_PATH.'/html/page_footer.php'; ?>
+	<?php require HTML_INCLUDE_PATH.'/page_footer.php'; ?>
 
 </div> <!-- #main_wrapper -->
 <?php

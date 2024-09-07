@@ -42,7 +42,7 @@ try {
 /**
  * HTML
  */
-require_once(ASSETS_PATH."/html/common.php");
+require_once(HTML_INCLUDE_PATH."/html/common.php");
 $App->Page->title($App->Lang->returnT('meta_title'));
 $App->Page->includeCss(BASE_URL.'/css/build/cart.css');
 $App->Page->addClass('page_cart page_cart_completed negative');
@@ -50,7 +50,7 @@ $App->Page->open();
 ?>
 <div id="main_wrapper">
 <?php
-require ASSETS_PATH.'/html/page_header.php';
+require HTML_INCLUDE_PATH.'/page_header.php';
 ?>
 <main id="page_content">
    
@@ -93,7 +93,7 @@ require ASSETS_PATH.'/html/page_header.php';
 
 </main>
 
-<?php require ASSETS_PATH.'/html/page_footer.php'; ?>
+<?php require HTML_INCLUDE_PATH.'/page_footer.php'; ?>
 </div> <!-- #main_wrapper -->
 <?php
 $App->Page->close(); // chiude body e html

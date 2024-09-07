@@ -94,9 +94,6 @@ $App->store('Logger',function() use ($App){
 });
 
 
-/* dati legali */
-require ASSETS_PATH.'/html/legal.php';
-
 
 /**
  * Classi necessarie al funzionamento del sito

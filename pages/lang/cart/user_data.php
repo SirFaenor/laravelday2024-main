@@ -2,7 +2,7 @@
 /**
  * Pagina riepilogo carrello
  */
-require(ASSETS_PATH.'/html/common.php');
+require(HTML_INCLUDE_PATH.'/common.php');
 
 
 /**
@@ -23,7 +23,7 @@ $App->Lang->loadTrads("products_global,cart_global,cart_detail,cart_user_data");
  * Form
  */
 $xml = $App->User->getid_cat() == 2  ? 'cart_user_profile_b2b_fields' : 'cart_user_profile_fields';
-$Form = $App->create('Form',array('form_name' => 'cart_user_data','path_to_xml_file' => ASSETS_PATH.'/xml/'.$xml.'.xml'));
+$Form = $App->create('Form',array('form_name' => 'cart_user_data','path_to_xml_file' => HTML_INCLUDE_PATH.'/xml/'.$xml.'.xml'));
 
 
 /**
@@ -242,7 +242,7 @@ $App->Page->open();
 ?>
 <div id="main_wrapper">
 
-<?php require ASSETS_PATH.'/html/page_header.php'; ?>
+<?php require HTML_INCLUDE_PATH.'/page_header.php'; ?>
 <main id="page_content">
     <section id="intro_section" data-animscroll data-as-delay="200ms" data-as-animation="fadeIn">
         <h1 class="page_title center_width"><?php $App->Lang->echoT('page_title'); ?></h1>
@@ -287,7 +287,7 @@ COLONNA LATERALE
 
 </main><!-- #page_content -->
 
-<?php require ASSETS_PATH.'/html/page_footer.php'; ?>
+<?php require HTML_INCLUDE_PATH.'/page_footer.php'; ?>
 
 </div> <!-- #main_wrapper -->
 <?php

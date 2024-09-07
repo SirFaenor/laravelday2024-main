@@ -3,7 +3,7 @@ $itemUrl = $App->UrlUtility->getUrlItemByReverseIndex(0);
 $thisItem = $App->create("ProductsRepository")->loadByUrl($itemUrl);
 if (!$thisItem) {throw new \Box\Exceptions\NotFoundException();}
 
-require(ASSETS_PATH.'/html/common.php');
+require(HTML_INCLUDE_PATH.'/common.php');
 $App->Lang->loadTrads('tavern');
 $App->Lang->setActive('tavern');
 
@@ -32,7 +32,7 @@ $App->Page->open();
 ?>
 <div id="main_wrapper">
 
-	<?php require ASSETS_PATH.'/html/page_header.php'; ?>
+	<?php require HTML_INCLUDE_PATH.'/page_header.php'; ?>
 	<main id="page_content">
 
         <section id="intro_section" class="center_width">
@@ -61,7 +61,7 @@ echo '      <figure>
 		</section>
 
 	</main><!-- #page_content -->
-	<?php require ASSETS_PATH.'/html/page_footer.php'; ?>
+	<?php require HTML_INCLUDE_PATH.'/page_footer.php'; ?>
 </div>
 
 </div> <!-- #main_wrapper -->
