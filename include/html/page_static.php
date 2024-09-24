@@ -15,9 +15,7 @@ try {
     $site_code  = $App->Config['site']['code'];
 
     $footer     = ' <address>
-                            '.$App->Config['company']['name_short'].' - '.
-                                $App->Config['company']['address'].' - '.
-                                $App->Config['company']['zip'].' '.$App->Config['company']['city'].' ('.$App->Config['company']['region_abbr'].') - <abbr title="'.$App->Lang->returnT('label_telefono').'">'.$App->Lang->returnT('label_telefono_abbr').'</abbr> <a class="tel" href="callto:'.$App->FixNumber->telnumberToCallableTelnumber($App->Config['company']['phone'][0]).'">'.$App->Config['company']['phone'][0].'</a> - <a href="mailto:'.$App->Config['company']['mail'][0].'">'.$App->Config['company']['mail'][0].'</a> - <abbr title="'.$App->Lang->returnT('label_piva').'">'.$App->Lang->returnT('label_piva_abbr').'</abbr> '.$App->Config['company']['data']['vat'].'
+                            '.$App->Config['company']['name_short'].'
                     </address>'.PHP_EOL;
 
     $lgSuff = $App->Lang->lgSuff;
@@ -48,9 +46,8 @@ try {
     <meta charset="utf-8">
     <title><?php echo $meta_title; ?></title>
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=0.5,maximum-scale=3,user-scalable=yes">
-    <link href="/css/base.css" type="text/css" rel="stylesheet">
-    <link href="/fonts/cera-pro/stylesheet.css" type="text/css" rel="stylesheet">
-    <link href="/css/pages/text.css" type="text/css" rel="stylesheet">
+    <link href="/css/build/style.css" type="text/css" rel="stylesheet">
+    <link href="/css/text.css" type="text/css" rel="stylesheet">
     </head>
     <body class="text-page">
 
@@ -59,7 +56,7 @@ try {
     <nav id="page_header" class="center_width clearfix">
         <h2 id="logo">
             <a href="<?php echo $home_link; ?>">
-                <img src="/imgs/layout/<?php echo $site_code; ?>-logo.svg" alt="<?php echo $site_name; ?>">
+                <img src="/imgs/layout/logo.svg" alt="<?php echo $site_name; ?>">
             </a>
         </h2>
     </nav>

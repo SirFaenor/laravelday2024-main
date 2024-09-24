@@ -3,7 +3,7 @@ FROM  sirfaenor/dev-php:7.4-apache
 ARG APACHE_RUN_USER
 ARG APACHE_RUN_GROUP
 
-RUN docker-php-ext-install mysqli
+RUN docker-php-ext-install mysqli pdo_mysql
 
 RUN useradd --uid $APACHE_RUN_USER --gid $APACHE_RUN_GROUP --shell /bin/bash --create-home appuser
 RUN usermod -aG root appuser

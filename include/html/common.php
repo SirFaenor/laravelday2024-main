@@ -339,8 +339,4 @@ if (empty($_COOKIE["cookie_alert"])):
 endif;
 
 
-# eventuali avvisi
 
-if($App->warning):
-    $App->Page->prependHtml('<div id="warning" style="color: '.$App->warning['color_text'].'; background: '.$App->warning['color_bg'].'">'.($App->warning['fullPageUrl'] ? '<img src="'.$App->warning['fullPageUrl'].'" alt="">' : '').'<span class="warning_text">'.$App->warning['title'].'</span></div>'.PHP_EOL);
-endif;

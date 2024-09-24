@@ -427,7 +427,7 @@ abstract class Cart {
 		$this->calcItemsTotalAmount();
 
 		// ridefinisco le spese di spedizione sul totale
-		$this->setExpeditions();
+		// $this->setExpeditions();
 		$this->totalAmount += $this->selectedExpedition['prezzo_cart'];
 
         // calcolo l'importo degli sconti (se lo sconto è maggiore dell'importo dei prodotti, lo rendo uguale all'importo dei prodotti)
@@ -435,12 +435,12 @@ abstract class Cart {
         if($this->Discount):
             $this->totalAmount -= $this->Discount['importo_finale'];
             if($this->totalAmount < $this->selectedExpedition['soglia']):
-                $this->setExpeditions();
+                // $this->setExpeditions();
             endif;
         endif;
 
 		// ridefinisco i metodi di pagamento sul totale (compresi sconti e spese di spedizione)
-		$this->setPaymentMethods();
+		//$this->setPaymentMethods();
 
 		$this->totalAmount += $this->selectedPaymentMethod['prezzo'];
 	}
