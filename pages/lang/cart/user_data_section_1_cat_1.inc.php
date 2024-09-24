@@ -52,14 +52,7 @@
                     </label>
 <?php endif; ?>
 
-<?php
-if($App->Cart->getSelectedExpedition()['needs_shipping'] == 'Y'):
-    require __DIR__.'/user_data_section_address_cat_1.inc.php';
-else:
-    echo '          <input type="hidden" name="id_nazione" value="'.$App->User->getid_nazione().'" data-input_label="'.$App->Lang->returnT('label_nazione').'" data-sigla_nazione="'.$App->User->getsigla_nazione().'" required>'.PHP_EOL;
-endif;
-?>
-                </fieldset>
+               </fieldset>
 
 <?php
 /**

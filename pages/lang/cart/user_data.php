@@ -82,7 +82,6 @@ $App->Page->alternates($App->Lang->getAllAlternates());
 $App->Page->addJS(<<<JAVASCRIPT
     $(document).ready(function(){
 
-
         /**
          * eliminazione della situazione finale lasciata dall'utente (con layer bianco)   
          * se utente torna con il "back" del browser
@@ -106,33 +105,22 @@ $App->Page->addJS(<<<JAVASCRIPT
         });
         UserForm.arMsgs = window.arTrads;
 
-
-        /**
-         * Evento finale di completamento di tutta la procedura
-         * (lanciato per tutti i metodi di pagamento)
-         */
-        $(document).on("payment_completed", function() {
-            window.location = '{$App->Lang->returnL('cart_order_prepare')}';
-        });
-
-
         /**
          * GESTIONE SUBMIT DEL FORM
          */
         $(UserForm).on({
             // evento generato dopo che è stata chiamata la pagina action-parser, che ha validato il form
             // e ha registrato l'ordine salvandone l'id in sessione
-            submit_completed    : function(e,msg,data){  
+            submit_completed    : function(e,msg,redirect){  
                        
                 MESSENGER.setClass("success");
                 MESSENGER.showMessenger(msg);
-
 
                 /**
                  * pagamento normale, procedura già completata
                  */
                 return setTimeout(function() {
-                    $(document).trigger("payment_completed");
+                    window.location = redirect;
                 }, 2000);
 
             }

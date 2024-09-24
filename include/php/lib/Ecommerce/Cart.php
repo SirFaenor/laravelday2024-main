@@ -426,23 +426,6 @@ abstract class Cart {
 
 		$this->calcItemsTotalAmount();
 
-		// ridefinisco le spese di spedizione sul totale
-		// $this->setExpeditions();
-		$this->totalAmount += $this->selectedExpedition['prezzo_cart'];
-
-        // calcolo l'importo degli sconti (se lo sconto è maggiore dell'importo dei prodotti, lo rendo uguale all'importo dei prodotti)
-        $this->checkDiscount();
-        if($this->Discount):
-            $this->totalAmount -= $this->Discount['importo_finale'];
-            if($this->totalAmount < $this->selectedExpedition['soglia']):
-                // $this->setExpeditions();
-            endif;
-        endif;
-
-		// ridefinisco i metodi di pagamento sul totale (compresi sconti e spese di spedizione)
-		//$this->setPaymentMethods();
-
-		$this->totalAmount += $this->selectedPaymentMethod['prezzo'];
 	}
 
 
@@ -456,18 +439,6 @@ abstract class Cart {
 		return $this->totalAmount;
 	}
 
-
-	/**
-	* 	getItemsAmount()
-	* 	ritorna il totale del carrello solo dei prodotti
-	*	a seconda dell'abilitazione utente con IVA o senza IVA
-	*	@param void
-	*	@return float $this->itemsAmount : totale del carrello senza i prodotti
-	*/
-	public function getItemsAmount(){
-		return $this->User->allowed('IVA_INCLUSA') ? $this->itemsAmount+$this->itemsIVAAmount : $this->itemsAmount;
-	}
-	
 
 	/**
 	* 	getProdAmount()

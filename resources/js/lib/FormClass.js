@@ -515,7 +515,7 @@ var FormClass = function(params){
                     	// rimuovo tutti gli errori
                     	$('.has_error').removeClass('has_error');
 
-		                if(r.result > 0){
+						if(r.result > 0){
 
                             // adWords
                             if($THIS.sendPage !== null){
@@ -527,8 +527,7 @@ var FormClass = function(params){
 	                        }
 
 	                        if ($THIS.settings.showMessageOnSuccess) {$THIS.showMessage(r.msg,'success');}
-
-			            	$($THIS).trigger('submit_completed', r.msg, (r.hasOwnProperty('extra_data') ? r.extra_data : {}));
+			            	$($THIS).trigger('submit_completed', [r.msg, (r.hasOwnProperty('redirect') ? r.redirect : null)]);
                             if ($THIS.settings.tooltipDurationOnSuccess) {
                             	$THIS.t = setTimeout(function(){ 
 					                            	$THIS.clearErrors();

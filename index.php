@@ -81,13 +81,6 @@ $arLangs    = array_column($App->Lang->{$language_method}(),'suffix');
 
 
 /**
- * controllo redirect
- */
-require_once(__DIR__.'/redirects.php');
-
-
-
-/**
  * Homepage lingua principale
  */
 if ($_SERVER["REQUEST_URI"] == $arLangs[0] || $_SERVER["REQUEST_URI"] == '/'.$arLangs[0].'/homepage.php'):

@@ -54,18 +54,7 @@
         echo '              <table class="cart_table">
                                 <tbody>'.PHP_EOL;
        
-        
-        /**
-         * pagamento
-         * (per ultimo, in quanto il prezzo viene calcolato sul totale ordine dopo aver applicato eventuale codice sconto)
-         */
-        if ($App->Cart->getSelectedPaymentMethod()['prezzo'] > 0) :
-            echo '                  <tr class="cart_item small">
-                                        <td class="img_and_price" colspan="2">'.$App->Lang->returnT("payment").': '.$App->Cart->getSelectedPaymentMethod()['title'].'</td>
-                                        <td class="price">'.$App->FixNumber->numberToCurrency($App->Cart->getSelectedPaymentMethod()['prezzo']).'</td>
-                                    </tr>'.PHP_EOL;
-        endif;
-
+       
         echo '                  </tbody>
                             </table>'.PHP_EOL;
 ?>
@@ -122,12 +111,7 @@ endif;
                     <?php
                     $allowedToCheckoutMsg = $App->Cart->allowedToCheckout();
                     if($allowedToCheckoutMsg === true):
-                        if($App->Cart->getSelectedPaymentMethod()["instant_payment"] == 'Y') {
-                            $label = $App->Lang->returnT('proceed_payment');
-                           
-                        } else {
-                            $label = $App->Lang->returnT('finalize_order');
-                        }
+                        $label = $App->Lang->returnT('proceed_payment');
                     ?>
                     <button class="next btn rounded yellow" id="go_to_payment" type="submit">
                         <span> <?php echo $label ?></span>

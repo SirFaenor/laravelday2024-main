@@ -316,69 +316,6 @@ class User extends \Site\User {
 	}
 
 
-	/**
-	* 	setDefaults()
-	* 	Imposto alcuni dati di defaults per gli utenti
-	*	@param void
-	*	@return void
-	*/
-	protected function setDefaults($id_cat = NULL){
-
-        // inserisco un id lingua di default, in attesa di capire perché $Lang arriva qui senza un id
-        // (errori in pp_ipn_listener.php)
-        $defaultLg = $this->Lang->lgId ?: 1;
-
-        if (!$this->Da) {return null;}
-
-		if(!$id_cat && is_array($this->arData) && array_key_exists('id_cat',$this->arData) && $this->arData['id_cat']):
-			$id_cat = $this->arData['id_cat'];
-		endif;
-
-		if($id_cat):
-			$defaultCat = $this->Da->getSingleRecord(array(	# ottengo la prima categoria impostata com default
-				'model'		=> 'CLIENTE_CAT'
-				,'cond'		=> 'AND X.id = :cat_id AND XL.lang = :lg_id HAVING published ORDER BY X.position ASC, X.id ASC LIMIT 1'
-				,'params'	=> array('cat_id' => $id_cat,'lg_id' => $defaultLg)
-			));
-		else:
-			$defaultCat = $this->Da->getSingleRecord(array(	# ottengo la prima categoria impostata com default
-				'model'		=> 'CLIENTE_CAT'
-				,'cond'		=> 'AND X.default_cat = "Y" AND XL.lang = :lg_id HAVING published ORDER BY X.position ASC, X.id ASC LIMIT 1'
-				,'params'	=> array('lg_id' => $defaultLg)
-			));
-		endif;
-
-		if($defaultCat):
-			$this->arData['id_cat'] 	= $defaultCat['id'];			# id della categoria
-			$this->arData['title_cat'] 	= $defaultCat['title'];			# nome categoria
-			$this->arData['code_cat'] 	= $defaultCat['code'];			# codice categoria
-			$this->arData['min_cart'] 	= $defaultCat['min_cart'];		# carrello minimo per questa categoria
-			$this->arData['min_cart_um']= $defaultCat['min_cart_um'];	# unità di misura per il carrello minimo
-		else:
-			trigger_error('['.__METHOD__.'] Manca una categoria di default da usare quando l\'utente non è loggato', E_USER_ERROR);
-		endif;
-
-		// nazione di default
-		$this->arData['id_nazione'] 	= $this->arDefaultOptions['id_nazione'];	// italia
-		$nazione = $this->nationData($this->arData['id_nazione']);
-		$this->arData['nazione'] 		= $nazione 	? $nazione['nazione'] 		: $this->arDefaultOptions['nazione'];
-		$this->arData['sigla_nazione'] 	= $nazione 	? $nazione['sigla_nazione'] : $this->arDefaultOptions['sigla_nazione'];
-		$this->arData['newsletter'] 	= 'N';	
-
-		// provincia di default
-		$this->arData['id_provincia'] 	= $this->arDefaultOptions['id_provincia'];	// italia
-		$provincia = $this->Da->getSingleRecord(array(
-			'model'		=> 'PROVINCE'
-			,'cond'		=> 'AND X.id = ? AND XL.lang = ?'
-			,'params' 	=> array($this->arData['id_provincia'],$this->Lang->lgId)
-		));
-		$this->arData['provincia'] 		= $provincia ? $provincia['title'] : $this->arDefaultOptions['provincia'];
-		$this->arData['sigla_provincia'] = $provincia ? $provincia['sigla'] : $this->arDefaultOptions['sigla_provincia'];
-		$this->arData['newsletter'] 	= 'N';	
-				
-	}
-
-
 	protected function getDefault($search){
 		return array_key_exists($search,$this->arDefaultOptions) ? $this->arDefaultOptions[$search] : null;
 	}
@@ -972,49 +909,9 @@ class User extends \Site\User {
 	*	@return void
 	*/
 	public function setPermits(){
-
-		// se non ho una categoria di default imposto sulla prima
-		if(!$this->arData['id_cat']):
-			$defaultCat = $this->Da->getSingleRecord(array(	# ottengo la prima categoria impostata com default
-				'model'		=> 'CLIENTE_CAT'
-				,'cond'		=> 'AND X.default_cat = "Y" AND XL.lang = ? HAVING published ORDER BY X.position ASC, X.id ASC LIMIT 1'
-				,'params'	=> array($this->Lang->lgId)
-			));
-
-			if($defaultCat):
-				$this->arData['id_cat'] 	= $defaultCat['id'];			# id della categoria
-				$this->arData['title_cat'] 	= $defaultCat['title'];			# nome categoria
-				$this->arData['code_cat'] 	= $defaultCat['code'];			# codice categoria
-				$this->arData['min_cart'] 	= $defaultCat['min_cart'];		# carrello minimo per questa categoria
-				$this->arData['min_cart_um']= $defaultCat['min_cart_um'];	# unità di misura per il carrello minimo
-			else:
-				trigger_error('['.__METHOD__.'] Non ho alcun id categoria cliente su cui impostare i permessi', E_USER_ERROR,E_USER_ERROR);
-			endif;
-		endif;
-
-		$this->permits = array();	// azzero i permessi esistenti
-
-		// ottengo le resrizioni 
-		$arPermits = $this->Da->customQuery("
-			SELECT 
-			X.id_sec
-			,P.code
-			FROM cliente_cat_rel_permits AS X 
-			INNER JOIN permits AS P ON P.id = X.id_sec 
-			WHERE X.id_main = ? 
-			AND P.public = 'Y' 
-			AND (NOW() BETWEEN P.date_start AND P.date_end)
-		",array($this->arData['id_cat']));
-		if($arPermits):
-			foreach($arPermits as $P):
-				$this->allow($P['code'],true);
-			endforeach;
-		endif;
-
-		// PERMESSO CUSTOM: CALCOLARE IL VALORE DELL'IVA NEL PREZZO
-		if($this->getid_cat() == 1 || ($this->getid_cat() != 1 && $this->getid_nazione() == 1)):
-			$this->allow('CALC_IVA_IN_PRICE',true);
-		endif;
+		
+		return;
+		
 	}
     
 

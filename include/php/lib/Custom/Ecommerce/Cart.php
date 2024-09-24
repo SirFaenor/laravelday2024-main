@@ -28,64 +28,7 @@ class Cart extends \Ecommerce\Cart {
 	* 	@return void
 	*/
 	public function setPaymentMethods(){
-
-        // base di calcolo per pagamenti 
-        $baseAmount = $this->prodAmount + $this->selectedExpedition["prezzo_cart"];
-
-        // restto, questo metodo viene chiamato più volte (da migliorare...)
-        $this->arPaymentMethods = array();
-
-		// ottengo i metofi di pagamento cui l'utente è abilitato
-		$arPayments = $this->Da->getRecords(array(
-			'model'		=> 'METODI_PAGAMENTO'
-            ,'cond'     => 'AND XL.lang = ? 
-                                AND X.id IN (SELECT id_main FROM metodo_pagamento_rel_cliente_cat WHERE id_sec = ? ) 
-                                AND X.id IN (SELECT id_sec FROM spedizioni_rel_metodo_pagamento WHERE id_main = ? ) 
-                                HAVING published ORDER BY X.position ASC'
-            ,'params'     => array($this->Lang->lgId,$this->User->getid_cat(),$this->selectedExpedition['id'])
-		));
-
-		if($arPayments):
-			foreach($arPayments as $k => $Payment):
-
-                # se il prezzo del pagamento è euro lo applico, altrimenti lo calcolo sulla base dell'importo del carrello (totale!)
-                $Payment['prezzo_orig'] = $Payment['prezzo'];
-                $Payment['prezzo'] = $Payment['prezzo_tipo'] == 'V' ? $Payment['prezzo'] : round($baseAmount*$Payment['prezzo']/100,2);
-
-                // imposto l'iva della spedizione
-                $iva = isset($Payment['iva']) ? $Payment['iva'] : 22;
-                $Payment['prezzo_no_iva'] = round($Payment['prezzo']*10000/(100+$iva))/100;
-                $Payment['prezzo_iva'] = $Payment['prezzo']-$Payment['prezzo_no_iva'];
-
-                $Payment['is_braintree'] = preg_match('/^BRAINTREE\_/',$Payment['code']) ? true : false;
-
-                # verifico se voglio un check di sicurezza ulteriore (sia su base di impostazione che di soglia)
-                $Payment['security_check_required'] = $Payment['use_extra_security_check'] == 'Y' && $this->totalAmount > $Payment['extra_security_check_threshold'] ? true : false;
-
-                # verifico se ci le condizioni per applicare questo sistema di pagamento
-                if($baseAmount < $Payment['ordine_min'] || ($Payment['ordine_max'] > 0 && $baseAmount+$Payment['prezzo'] > $Payment['ordine_max'])): 
-                    unset($this->arPaymentMethods[$Payment['code']]);
-                    continue;
-                endif;
-
-				$this->addPaymentMethod($Payment['code'],$Payment); 
-
-			endforeach;
-		endif;
-
-		if(!$this->arPaymentMethods):
-			throw new \Exception('['.__METHOD__.'] Non è stato possibile impostare alcun metodo di pagamento', E_USER_ERROR);
-        endif;
-
-        // di base imposto il primo metodo di pagamento come quello selezionato
-        if(!$this->selectedPaymentMethod || array_key_exists($this->selectedPaymentMethod['code'],$this->arPaymentMethods) === false):
-            $this->selectedPaymentMethod = NULL;
-            $this->selectedPaymentMethod = reset($this->arPaymentMethods);
-        elseif($this->selectedPaymentMethod !== $this->arPaymentMethods[$this->selectedPaymentMethod['code']]):
-            $this->selectedPaymentMethod = $this->arPaymentMethods[$this->selectedPaymentMethod['code']];
-        endif;
-
-		$this->selectedPaymentMethod['prezzo'] = $this->arPaymentMethods[$this->selectedPaymentMethod['code']]['prezzo'];
+        return;
 	}
 
 
