@@ -33,7 +33,7 @@ $App->Page->open();
 
 		<ul id="links_list" class="reset">
 			<li class="tavern" data-animscroll data-as-delay="200ms" data-as-animation="fadeIn">
-				<a href="<?php $App->Lang->echoL('tavern'); ?>">
+				<a href="#">
 					<picture class="poster">
 		                <source srcset="/imgs/content/tavern-poster-mobile.jpg" media="(max-width: 680px)">
 						<img src="/imgs/content/tavern-poster.jpg" srcset="/imgs/content/tavern-poster.jpg 1x,/imgs/content/tavern-poster@2x.jpg 2x" alt="<?php $App->Lang->echoT('alt_image'); ?>">
@@ -43,7 +43,7 @@ $App->Page->open();
 				</a>
 			</li>
 			<li class="hours_info" data-animscroll data-as-delay="200ms" data-as-animation="fadeIn">
-				<a href="<?php $App->Lang->echoL('hours_info'); ?>">
+				<a href="#">
 					<picture class="poster">
 		                <source srcset="/imgs/content/hours_info-poster-mobile.jpg" media="(max-width: 680px)">
 						<img src="/imgs/content/hours_info-poster.jpg" srcset="/imgs/content/hours_info-poster.jpg" alt="<?php $App->Lang->echoT('alt_image'); ?>">
@@ -53,7 +53,7 @@ $App->Page->open();
 				</a>
 			</li>
 			<li class="park" data-animscroll data-as-delay="200ms" data-as-animation="fadeIn">
-				<a href="<?php $App->Lang->echoL('park'); ?>">
+				<a href="#">
 					<picture class="poster">
 		                <source srcset="/imgs/content/park-poster-mobile.jpg" media="(max-width: 680px)">
 						<img src="/imgs/content/park-poster.jpg" srcset="/imgs/content/park-poster.jpg 1x,/imgs/content/park-poster@2x.jpg 2x" alt="<?php $App->Lang->echoT('alt_image'); ?>">

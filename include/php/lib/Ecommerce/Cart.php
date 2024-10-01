@@ -1,28 +1,25 @@
 <?php
 /**
-###########################################################################
-class.Cart
----------------------------------------------------------------------------
-Gestione del carrello 
-Sezioni principali
--> 	gestione impostazionio del carrello
-	- metodi di pagamento 
-	- spese di spedizione
--> 	gestione prodotti
-	- aggiunta
-	- rimozione
-	- conteggio
-->	importo del carrello
-	- calcolo il totale del carrello
-	- ritorno il totale del carrello
--> 	codice sconto
-	- imposto un codice sconto
-
-TODO INSERIRE CONDIZIONI AGGIUNTIVE (pacco regalo, ...)
-TODO SALVARE CONDIZIONI AGGIUNTIVE (pacco regalo, ...)
-###########################################################################
-*/
-
+ * ###########################################################################
+ * class.Cart
+ * ---------------------------------------------------------------------------
+ * Gestione del carrello 
+ * Sezioni principali
+ * -> 	gestione impostazionio del carrello
+ * 	- metodi di pagamento 
+ * 	- spese di spedizione
+ * -> 	gestione prodotti
+ * 	- aggiunta
+ * 	- rimozione
+ * 	- conteggio
+ * ->	importo del carrello
+ * 	- calcolo il totale del carrello
+ * 	- ritorno il totale del carrello
+ * -> 	codice sconto
+ * 	- imposto un codice sconto
+ * 
+ * ###########################################################################
+ */
 
 namespace Ecommerce;
 
@@ -47,6 +44,7 @@ abstract class Cart {
 	protected $Ecomm;
 	protected $Currency;
 	protected $FixNumber;
+	protected $FixString;
 
 	protected $arPaymentMethods;		// i metodi di pagamento disponibili
 	protected $selectedPaymentMethod;	// il metodo di pagamento selezionato
@@ -506,238 +504,7 @@ abstract class Cart {
 	}
 
 
-	/**
-	* 	checkDiscount()
-	* 	verifico se uno sconto è utilizzabile
-    *   NB: viene chiamata anche in calcTotalAmount per ricostruire il codice sconto ed usarlo nel calcolo!!
-	*	@param string $code : codice sconto; se non presente utilizza il codice sconto già inserito
-	*	@return bool true o false se lo sconto può essere applicato o meno
-	*/
-	protected function checkDiscount($code = NULL){
-
-		$response = array('result' => 0, 'resp_code' => 'NOT_FOUND', 'resp_msg' => '');
-		
-		if($code !== NULL):
-			// verifico che il codice esista e sia attivo (uso LIKE BINARY PER case sensitive)
-			$this->Discount = $this->Da->getSingleRecord(array(
-				'table'		=> 'codice_sconto'
-				,'cond'		=> 'WHERE codice LIKE BINARY :discount_code AND public = "Y" AND (NOW() BETWEEN date_start AND date_end)'
-				,'params'	=> array('discount_code' => $code)
-			));
-		endif;
-
-        if($this->Discount):
-			
-			$this->Discount['importo_finale'] = 0;				// azzero il valore dello sconto
-
-			$is_usable = $this->checkDiscountUsage();
-
-			if($is_usable === true):
-				$response = $this->applyDiscount();
-			else:
-				if($is_usable !== false):
-					$response['resp_code'] = $is_usable;
-				endif;
-			endif;
-
-		endif; 	// fine esiste codice sconto
-
-		if($response['result'] == 0):
-			$this->clearDiscount();
-		endif;
-
-		return $response;
-
-	}
-
-
-	/**
-	* 	applyDiscount()
-	* 	imposto lo sconto
-	*	@param void
-	*	@return (bool) posso usare il codice sconto?
-	*/
-	protected function applyDiscount(){
-
-		$to_return = array('result' => 0, 'resp_code' => 'NOT_FOUND', 'resp_msg' => '');
-
-		if($this->Discount['tipo_sconto'] == 'S'):					// se il codice sconto toglie le spese di spedizione
-
-			// calcolo le spese di spedizione
-			if($this->selectedExpedition['prezzo_cart'] == 0):		// se le spese di spedizione sono a 0 annullo il codice sconto e avverto l'utente
-				$to_return['resp_code'] = 'EXP_0';
-			else:
-				$to_return['result'] = 1;
-				$to_return['resp_code'] = 'OK';
-				$this->Discount['importo_finale'] = $this->selectedExpedition['prezzo_cart'];
-			endif;
-
-		else:
-
-			if(!$this->Discount['spesa_minima'] || $this->getProdAmount() > (float)$this->Discount['spesa_minima']):
-			
-				// verifico se il codice sconto è associato ad uno o più prodotti
-				$arAssPrt = $this->Da->getRecords(array(
-					'table'		=> 'codice_sconto_rel_prodotto'
-					,'columns'	=> array('id_sec')
-					,'cond'		=> 'WHERE id_main = :discount_id'
-					,'params'	=> array('discount_id' => $this->Discount['id'])
-				));
-
-				// se è associato a dei prodotti verifico che nel carrello esistano i prodotti per cui è associato
-				if($arAssPrt):
-					$this->Discount['ar_prt'] = array();		// salvo i prodotti associati
-					$to_return['resp_code'] = 'KO_TO_PRODUCT';	// di base imposto il messaggio come se non avessi nessun prodotto associato nel carrello
-					$apply_to_amount = 0;						// totale su cui applicare lo sconto (mi serve se ho più prodotti relazionati)
-					
-					foreach($arAssPrt as $AP):
-
-						$prod_amount_in_cart = $this->isItemInCart($AP['type'].'_'.$AP['id_sec']);	// ottengo l'importo oresente nel carrello per il prodotto selezionato
-						if($prod_amount_in_cart !== false):		// se nel carrello esiste il prodotto associato
-							$apply_to_amount += $prod_amount_in_cart;
-							$this->Discount['ar_prt'][$AP['id_sec']] = $AP['id_sec'];
-						endif;							
-					endforeach;
-
-					if($apply_to_amount > 0):
-						$to_return['result'] = 1;
-						$to_return['resp_code'] = 'OK_TO_PRODUCT';
-					endif;
-					$this->Discount['importo_finale'] = $this->Discount['valore_sconto'] == 'E' 
-												? ($this->Discount['importo_sconto'] > $apply_to_amount ? $apply_to_amount : $this->Discount['importo_sconto'])
-												: number_format(($apply_to_amount*$this->Discount['importo_sconto']/100),2,'.','');
-
-				else:
-
-					$to_return['result'] = 1;
-					$to_return['resp_code'] = 'OK';
-					$this->Discount['importo_finale'] = $this->Discount['valore_sconto'] == 'E' 
-												? ($this->Discount['importo_sconto'] > $this->getProdAmount() ? $this->getProdAmount() : $this->Discount['importo_sconto'])
-												: number_format(($this->getProdAmount()*$this->Discount['importo_sconto']/100),2,'.','');
-					
-				endif;	// fine prodotti associati
-
-				# se sto utilizzando solo una parte del codice sconto avverto l'utente
-				if($this->Discount['valore_sconto'] == 'E' && $this->Discount['importo_sconto'] > $this->Discount['importo_finale']):
-					$to_return['resp_code'] = 'OK_PARTIAL_USE';
-				endif;
-			else:
-				$to_return['resp_code'] = 'KO_MIN_CART';
-				$to_return['resp_msg'] 	= $this->Lang->returnT('codice_sconto_min_cart',array('your_cart' => $this->FixNumber->numberToCurrecy($this->getProdAmount()),'min_cart' => $this->FixNumber->numberToCurrecy($this->Discount['spesa_minima'])));
-			endif;	// fine spesa_minima
-
-			$this->Discount['importo_finale'] = $this->Discount['importo_finale'] > $this->totalAmount ? $this->totalAmount : $this->Discount['importo_finale'];		
-			
-		endif;	// fine tipo sconto
-
-		return $to_return;
-	}
-
-
-	/**
-	* 	checkDiscountUsage()
-	* 	verifico l'utilizzo del codice sconto
-	*	@param void
-	*	@return (book)
-	*/
-	protected function checkDiscountUsage(){
-
-		switch($this->Discount['tipo_utilizzo']):
-			case 1:		# utilizzo una sola volta
-				return $this->checkSingleUse();
-				break;
-			default:	# utilizzo n volte
-				return true;
-		endswitch;
-
-	}
-
-
-	/**
-	* 	checkSingleUse()
-	* 	verifico quante volte è stato utilizzato il codice sconto
-	*	@param void
-	*	@return (bool) posso usare il codice sconto?
-	*/
-	protected function checkSingleUse(){
-
-		// vedo se il codice è già stato utilizzato			
-		$Times = $this->countDiscountUsage($this->Discount['codice']);
-
-		if($Times > 0):
-			$this->disableDiscountCode($this->Discount['codice']);
-		endif;
-
-		return $Times > 0 ? false : true;
-
-	}
-
-
-	/**
-	* 	countDiscountUsage()
-	* 	recupero quante volte è stato utilizzato il codice sconto in un ordine completato
-	*	@param string $code
-	*	@return (int) numero di utilizzi
-	*/
-	protected function countDiscountUsage($code = NULL){
-
-		if($code === NULL):	# se il codice sconto ha valore null non posso utilizzarlo
-			throw new \Exception('['.__FILE__.'] Il codice sconto di cui verificare l\'utilizzo ha valore <code>NULL</code>',E_USER_NOTICE);
-			return 1;
-		endif;
-
-		// vedo se il codice è già stato utilizzato			
-		return $this->Da->countRecords(array(
-			'table'		=> 'ordine_codice_sconto'
-			,'cond'		=> 'WHERE code = :discount_code'
-			,'params'	=> array('discount_code' => $this->Discount['codice'])
-		));
-
-	}
-
-
-	/**
-	* 	disableDiscountCode()
-	* 	disabilito il codice sconto passato come parametro
-	*	@param string $code
-	*	@return bool success
-	*/
-	public function disableDiscountCode($code = NULL){
-
-		if($code === NULL):
-			throw new \Exception('['.__FILE__.'] Il codice sconto da disabilitare ha valore <code>NULL</code>',E_USER_NOTICE);
-			return true;
-		endif;
-		return $this->Da->updateRecords(array(
-				'table'		=> 'codice_sconto'
-				,'data'		=> array(
-					'public' => 'N'
-				)
-				,'cond'		=> 'WHERE codice = :discount_code'
-				,'params'	=> array('discount_code' => $code)
-			));
-	}
-
-
-	/**
-	* 	getDiscount()
-	* 	recupero gli sconti attivi (o uno specifico)
-	*	@param void
-	*	@return array $this->Discount o bool false
-	*/
-	public function getDiscount(){
-		return $this->Discount;
-	}
-
-
-
-	#########################################################
-	#
-	#	ORDINE
-	#
-	#########################################################
-
-
+	
 	/**
 	* 	__call()
 	* 	overloading per ottenere o impostare elementi dell'array arOrderData
@@ -848,44 +615,7 @@ abstract class Cart {
 	*	@param void
 	*	@return bool true o false
 	*/
-	public function saveOrder(){
-
-		$status = true;					// di base imposto il risultato su true
-
-		$this->arOrderData['ordine_code'] 		= $this->generateCode();
-		$this->arOrderData['totale']			= $this->totalAmount;
-		$this->arOrderData['data1'] 			= isset($this->arOrderData['date_insert']) ? $this->arOrderData['date_insert'] : date('Y-m-d H:i:s');
-		$this->arOrderData['date_start'] 		= isset($this->arOrderData['date_insert']) ? $this->arOrderData['date_insert'] : date('Y-m-d H:i:s');
-
-		$dataToSave = \Utility\DataUtility::MapData($this->Da->getColumns('ordine'),$this->arOrderData);
-
-		// recupero da dati legati al cliente
-		$dataToSave["takeaway"] = $this->arOrderData["ordine_cliente"]["takeaway"];
-		$dataToSave["table_number"] = $this->arOrderData["ordine_cliente"]["table_number"] ?: null;
-		
-		/**
-		 * token "login" per accesso al dettaglio ordine da link in email
-		 * (sarà verificato nella pagina di dettaglio ordine)
-		 * @todo esternare e centralizzare
-		 */
-		$dataToSave['token'] = hash("sha512", uniqid().$dataToSave["ordine_code"]);
-
-		$this->orderID = $this->Da->createRecord(array(
-			'table'		=> 'ordine'
-			,'data'		=> $dataToSave
-		));
-
-        $status = $this->orderID;
-        $status = $this->saveUserData();
-        
-        $status = $this->saveExpeditionData();
-        $status = $this->savePaymentData();
-        $status = $this->saveCartElements();
-        $status = $this->saveDiscount();
-        $status = $this->saveCustomOptions();
-		
-        return 	$status;
-	}
+	public abstract function saveOrder();
 
 
 	/**
@@ -920,59 +650,7 @@ abstract class Cart {
 	*/
 	protected function saveUserData(){
 
-		if(!isset($this->arOrderData['ordine_cliente'])):
-			$this->arOrderData['ordine_cliente'] = array();
-		endif;
-		$this->arOrderData['ordine_cliente']['id_ordine'] 		= $this->orderID;
-		$this->arOrderData['ordine_cliente']['id_cat'] 			= $this->User->getid_cat();
-		$this->arOrderData['ordine_cliente']['code'] 			= $this->User->getcat_code();
-		$this->arOrderData['ordine_cliente']['lang'] 			= $this->User->getid_lang() ?: 0;
-        $this->arOrderData['ordine_cliente']['sigla_nazione']   = strtoupper($this->User->getsigla_nazione());
-        $this->arOrderData['ordine_cliente']['company_invoice_request']   = isset($this->arOrderData['ordine_cliente']['company_invoice_request']) && $this->arOrderData['ordine_cliente']['company_invoice_request'] == 'Y' ? 'Y' : 'N';
-
-		# ottengo le sigle della nazione
-        if (!empty($this->arOrderData['ordine_cliente']['id_nazione'])) :
-            $thisNazione = $this->nationData($this->arOrderData['ordine_cliente']['id_nazione']);
-
-            $this->arOrderData['ordine_cliente']['sigla_nazione']   = strtoupper($thisNazione['sigla_nazione']);
-            $this->arOrderData['ordine_cliente']['nazione']         = $thisNazione ? $thisNazione['nazione'] : '';
-        endif;
-		
-
-		
-		# ottengo le sigle della provincia
-		if (!empty($this->arOrderData['ordine_cliente']['id_provincia'])):
-            $thisProv = $this->provinceData($this->arOrderData['ordine_cliente']['id_provincia']);
-
-            $this->arOrderData['ordine_cliente']['sigla_provincia']     = strtoupper($thisProv['sigla_provincia']);
-            $this->arOrderData['ordine_cliente']['provincia']           = $thisProv['provincia'];
-        endif;
-		
-
-		if($this->Da->countRecords(array(
-			'table'		=> 'ordine_cliente'
-			,'cond'		=> 'WHERE ordine_code = :ordine_code AND id = :table_id'
-			,'params'	=> array('ordine_code' => $this->arOrderData['ordine_code'],'table_id' => $this->User->getID())
-		)) > 0):
-			$dataToSave = \Utility\DataUtility::MapData($this->Da->getColumns('ordine_cliente'),$this->arOrderData['ordine_cliente']);
-			return $this->Da->updateRecords(array(
-				'table'		=> 'ordine_cliente'
-				,'data'		=> $dataToSave
-				,'cond'		=> 'WHERE ordine_code = :ordine_code AND id = :table_id'
-				,'params'	=> array('ordine_code' => $this->arOrderData['ordine_code'],'table_id' => $this->User->getID())
-			));
-		else:
-			$this->arOrderData['ordine_cliente']['ordine_code'] 	= $this->arOrderData['ordine_code'];
-			$this->arOrderData['ordine_cliente']['id'] 				= $this->User->getID();
-			$this->arOrderData['ordine_cliente']['date_insert'] 	= date('Y-m-d H:i:s');
-			$dataToSave = \Utility\DataUtility::MapData($this->Da->getColumns('ordine_cliente'),$this->arOrderData['ordine_cliente']);
-			return $this->Da->createRecord(array(
-				'table'			=> 'ordine_cliente'
-				,'data'			=> $dataToSave
-				,'preserveId'	=> 1
-			));
-		endif;
-
+		return;
 
 	}
 
@@ -985,112 +663,7 @@ abstract class Cart {
 	*/
 	protected function saveExpeditionData(){
 
-		# imposto i valori legati al metodo di spedizione
-		if(!isset($this->arOrderData['ordine_spedizione'])):
-			$this->arOrderData['ordine_spedizione'] = array();
-		endif;
-		$this->arOrderData['ordine_spedizione']['id_ordine'] 	= $this->orderID;
-		foreach($this->selectedExpedition as $k => $v):
-			$this->arOrderData['ordine_spedizione'][$k] = $v;
-		endforeach;
-
-        # salvo inoltre prezzo originario per futuri ricalcoli
-        $this->arOrderData['ordine_spedizione']['prezzo'] 			= $this->selectedExpedition["prezzo_cart"];
-        $this->arOrderData['ordine_spedizione']['prezzo_source'] 	= $this->selectedExpedition["prezzo"];
-
-        # calcolo il prezzo iva
-        $iva = isset($this->arOrderData['ordine_spedizione']['iva']) && !empty($this->arOrderData['ordine_spedizione']['iva']) ? $this->arOrderData['ordine_spedizione']['iva'] : NULL; // di base IVA al 22
-        if($iva === NULL && isset($this->arOrderData['ordine_spedizione']['id_iva']) && !empty($this->arOrderData['ordine_spedizione']['id_iva'])):
-        	$thisIVA = $this->Da->getSingleRecord(array(
-        		'table'		=> 'iva'
-        		,'cond'		=> 'WHERE id = :iva_id'
-        		,'params'	=> array('iva_id' => $this->arOrderData['ordine_spedizione']['id_iva'])
-        	));
-        	if($thisIVA):
-        		$iva = $thisIVA['valore'];
-        	endif;
-        endif;
-
-        # valore iva di fallback
-        if($iva === NULL):
-        	$iva = 22;
-        endif;
-
-        $this->arOrderData['ordine_spedizione']['prezzo_iva'] 		= ceil($this->arOrderData['ordine_spedizione']['prezzo']*$iva)/100;
-        $this->arOrderData['ordine_spedizione']['prezzo_no_iva'] 	= $this->arOrderData['ordine_spedizione']['prezzo'] - $this->arOrderData['ordine_spedizione']['prezzo_iva'];
-
-        $this->arOrderData['ordine_spedizione']["soglia"] 			= $this->selectedExpedition["soglia"];
-
-        $this->normalizeExpeditionData();
-
-		# registro i dati
-		if($this->Da->countRecords(array(
-			'table'		=> 'ordine_spedizione'
-			,'cond'		=> 'WHERE ordine_code = :ordine_code AND id = :table_id'
-			,'params'	=> array('ordine_code' => $this->arOrderData['ordine_code'],'table_id' => $this->selectedExpedition['id'])
-		)) > 0):
-			$dataToSave = \Utility\DataUtility::MapData($this->Da->getColumns('ordine_spedizione'),$this->arOrderData['ordine_spedizione']);
-			$returnValue = $this->Da->updateRecords(array(
-				'table'		=> 'ordine_spedizione'
-				,'data'		=> $dataToSave
-				,'cond'		=> 'WHERE ordine_code = :ordine_code AND id = :table_id'
-				,'params'	=> array('ordine_code' => $this->arOrderData['ordine_code'],'table_id' => $this->selectedExpedition['id'])
-			));
-		else:
-			$this->arOrderData['ordine_spedizione']['ordine_code'] 	= $this->arOrderData['ordine_code'];
-			$this->arOrderData['ordine_spedizione']['id'] 			= $this->selectedExpedition['id'];
-			$this->arOrderData['ordine_spedizione']['date_insert'] 	= date('Y-m-d H:i:s');
-
-			$dataToSave = \Utility\DataUtility::MapData($this->Da->getColumns('ordine_spedizione'),$this->arOrderData['ordine_spedizione']);
-			$returnValue =  $this->Da->createRecord(array(
-				'table'			=> 'ordine_spedizione'
-				,'data'			=> $dataToSave
-				,'preserveId'	=> 1
-			));
-		endif;
-
-        return $returnValue;
-	}
-
-
-	/**
-	* 	normalizeExpeditionData()
-	* 	normalizza i dati di spedizione
-	*	@param void
-	*	@return void
-	*/
-	public function normalizeExpeditionData(){
-
-		# normalizzo eventuali dati custom di spedizione
-		if($this->arOrderData['ordine_spedizione']['custom_data'] == 'Y'):
-
-			# ottengo le sigle della nazione
-			if (!empty($this->arOrderData['ordine_spedizione']['id_nazione'])):
-
-                $thisNazione = $this->nationData($this->arOrderData['ordine_spedizione']['id_nazione']);
-                
-                $this->arOrderData['ordine_spedizione']['sigla_nazione']    = strtoupper($thisNazione['sigla_nazione']);
-                $this->arOrderData['ordine_spedizione']['nazione']      	= $thisNazione['nazione'];
-            endif;
-
-			
-			# ottengo le sigle della provincia
-			if (!empty($this->arOrderData['ordine_spedizione']['id_provincia'])) :
-
-                $thisProv = $this->nationData($this->arOrderData['ordine_spedizione']['id_provincia']);
-    
-                $this->arOrderData['ordine_spedizione']['sigla_provincia']  = strtoupper($thisProv['sigla_provincia']);
-                $this->arOrderData['ordine_spedizione']['provincia']        = $thisProv['provincia'];
-    
-            endif;
-
-			// collego questo indirizzo di spedizione all'utente
-			$this->User->saveExpeditionAddress($this->arOrderData['ordine_spedizione']);
-
-		else:
-			$this->arOrderData['ordine_spedizione']['custom_data'] == 'N';
-		endif;
-
+		return;
 	}
 
 
@@ -1102,40 +675,7 @@ abstract class Cart {
 	*/
 	protected function savePaymentData(){
 
-		if(!isset($this->arOrderData['ordine_pagamento'])):
-			$this->arOrderData['ordine_pagamento'] = array();
-		endif;
-		$this->arOrderData['ordine_pagamento']['id_ordine'] 	= $this->orderID;
-		foreach($this->selectedPaymentMethod as $k => $v):
-			$this->arOrderData['ordine_pagamento'][$k] = $v;
-		endforeach;
-
-
-		# registro i dati
-		if($this->Da->countRecords(array(
-			'table'		=> 'ordine_pagamento'
-			,'cond'		=> 'WHERE ordine_code = :ordine_code AND id = :payment_id'
-			,'params'	=> array('ordine_code' => $this->arOrderData['ordine_code'],'payment_id' => $this->selectedPaymentMethod['id'])
-		)) > 0):
-			$dataToSave = \Utility\DataUtility::MapData($this->Da->getColumns('ordine_pagamento'),$this->arOrderData['ordine_pagamento']);
-			return $this->Da->updateRecords(array(
-				'table'		=> 'ordine_pagamento'
-				,'data'		=> $dataToSave
-				,'cond'		=> 'WHERE ordine_code = :ordine_code AND id = :payment_id'
-				,'params'	=> array('ordine_code' => $this->arOrderData['ordine_code'],'payment_id' => $this->selectedPaymentMethod['id'])
-			));
-		else:
-			$this->arOrderData['ordine_pagamento']['ordine_code'] 	= $this->arOrderData['ordine_code'];
-			$this->arOrderData['ordine_pagamento']['id'] 			= $this->selectedPaymentMethod['id'];
-			$this->arOrderData['ordine_pagamento']['date_insert'] 	= date('Y-m-d H:i:s');
-			$dataToSave = \Utility\DataUtility::MapData($this->Da->getColumns('ordine_pagamento'),$this->arOrderData['ordine_pagamento']);
-			return $this->Da->createRecord(array(
-				'table'		=> 'ordine_pagamento'
-				,'data'		=> $dataToSave
-				,'preserveId'	=> 1
-			));
-		endif;
-
+		return;
 	}
 
 
@@ -1160,200 +700,11 @@ abstract class Cart {
 	*/
 	protected function saveItems($Items = NULL){
 
-		$result = true;
-		$Items = $Items === NULL ? $this->arProducts : $Items;
-
-		if(count($Items) > 0):
-			foreach($Items as & $P):
-				$P['ordine_code'] 		= $this->arOrderData['ordine_code'];
-				$P['id_ordine'] 		= $this->orderID;
-				$P['id_prt'] 			= $P['id'];
-				unset($P['id']);
-
-				$normProd = $this->normalizeItemToSave($P);
-				$dataToSave = \Utility\DataUtility::MapData($this->Da->getColumns('ordine_prodotto'),$normProd);
-				if(!$this->Da->createRecord(array(
-						'table'		=> 'ordine_prodotto'
-						,'data'		=> $dataToSave
-					))):
-					$result = false;
-				endif;
-			endforeach;
-		else:
-			$result = false;
-		endif;
-
-		return $result;
+		return;
 	}
 
 
-	/**
-	* 	normalizeItemToSave()
-	* 	normalizza i dati di prodotto per il salvataggio
-	*	@param array : il prodotto cui normalizzare i dati
-	*	@return array prodotto normalizzato
-	*/
-	protected function normalizeItemToSave($P){
-
-			# ottengo il prezzo di questo prodotto per questo cliente
-			$thisProdInfoPrezzo = $this->Da->getSingleRecord(array(
-				'table'		=> 'prodotto_rel_cliente_cat'
-				,'cond'		=> 'WHERE id_main = :prt_id AND id_sec = :user_cat_id'
-				,'params'	=> array('prt_id' => $P['id_prt'],'user_cat_id' => $this->User->getid_cat())
-			));
-			
-			if(!$thisProdInfoPrezzo):
-				throw new \Exception('['.__METHOD__.'] Non ci sono informazioni da recuperare per il prodotto '.$P['title'].' con id '.$P['id_sec'],E_USER_ERROR);
-			endif;
-
-			$prezzo_iva 			= isset($P['ar_prezzi']['prezzo_iva']) 			? $P['ar_prezzi']['prezzo_iva'] 			: $thisProdInfoPrezzo['prezzo_iva'];
-			$prezzo_no_iva 			= isset($P['ar_prezzi']['prezzo_no_iva']) 			? $P['ar_prezzi']['prezzo_no_iva'] 		: $thisProdInfoPrezzo['prezzo_no_iva'];
-			$prezzo_finale_iva 		= isset($P['ar_prezzi']['prezzo_finale_iva']) 	? $P['ar_prezzi']['prezzo_finale_iva'] 	: $thisProdInfoPrezzo['prezzo2_iva'];
-			$prezzo_finale_no_iva 	= isset($P['ar_prezzi']['prezzo_finale_no_iva']) 	? $P['ar_prezzi']['prezzo_finale_no_iva'] 	: $thisProdInfoPrezzo['prezzo2_no_iva'];
-			$perc_discount 			= isset($P['ar_prezzi']['discount']) 				? $P['ar_prezzi']['discount'] 				: $thisProdInfoPrezzo['perc_discount'];
-
-			$P['quantita'] 			= $P['qta'];
-			$P['prezzo'] 			= $P['ar_prezzi']['prezzo'];
-			$P['prezzo_iva']		= $prezzo_iva;
-			$P['prezzo_no_iva'] 	= $prezzo_no_iva;
-			$P['prezzo2'] 			= $P['ar_prezzi']['prezzo_finale'];
-			$P['prezzo2_iva'] 		= $prezzo_finale_iva;
-			$P['prezzo2_no_iva'] 	= $prezzo_finale_no_iva;
-			$P['subtotal'] 			= $P['ar_prezzi']['prezzo_finale']*$P['qta'];
-			$P['subtotal_iva'] 		= $prezzo_finale_iva*$P['qta'];
-			$P['subtotal_no_iva']	= $prezzo_finale_no_iva*$P['qta'];
-			$P['perc_discount'] 	= $perc_discount;
-			$P['url'] 				= $P['url_page'];
-			$P['date_insert'] 		= date('Y-m-d H:i:s');
-
-			return $P;
-
-	}
-
-
-	/**
-	* 	saveDiscount()
-	* 	salva il codice sconto
-	*	@param void
-	*	@return bool true o false
-	*/
-	protected function saveDiscount(){
-		if($this->Discount):
-			if($this->checkDiscountUsage() === true):
-				return $this->registerDiscountData(); 
-			else:
-				$this->clearDiscount();
-				throw new \Box\Exceptions\BadRequestException('['.__METHOD__.'] Nessun codice sconto memorizzato nel carrello');
-				return false;
-			endif;
-		else:
-			return true;
-		endif;
-	}
-
-
-	/**
-	* 	registerDiscountData()
-	* 	registra i dati del codice sconto
-	*	@param void
-	*	@return bool true o false
-	*/
-	protected function registerDiscountData(){
-
-		$to_return = true;
-
-		if(!isset($this->arOrderData['ordine_codice_sconto'])):
-			$this->arOrderData['ordine_codice_sconto'] = array();
-		endif;
-
-		$this->arOrderData['ordine_codice_sconto'] = $this->Discount;
-		$this->arOrderData['ordine_codice_sconto']['title']	= $this->arOrderData['ordine_codice_sconto']['nome'];
-        $this->arOrderData['ordine_codice_sconto']['code']  = $this->arOrderData['ordine_codice_sconto']['codice'];
-        $this->arOrderData['ordine_codice_sconto']['id_iva']  = isset($this->arOrderData['ordine_codice_sconto']['id_iva']) ? $this->arOrderData['ordine_codice_sconto']['id_iva'] : 0;
-		unset($this->arOrderData['ordine_codice_sconto']['id']);
-
-		if(!$this->arOrderData['ordine_codice_sconto']['spesa_minima']):
-			$this->arOrderData['ordine_codice_sconto']['spesa_minima'] = 0;
-		endif;
-
-		# registro i dati
-		if($this->Da->countRecords(array(
-			'table'		=> 'ordine_codice_sconto'
-			,'cond'		=> 'WHERE ordine_code = :ordine_code AND id = :table_id'
-			,'params'	=> array('ordine_code' => $this->arOrderData['ordine_code'],'table_id' => $this->Discount['id'])
-		)) > 0):
-			$dataToSave = \Utility\DataUtility::MapData($this->Da->getColumns('ordine_codice_sconto'),$this->arOrderData['ordine_codice_sconto']);
-			return $this->Da->updateRecords(array(
-				'table'		=> 'ordine_codice_sconto'
-				,'data'		=> $dataToSave
-				,'cond'		=> 'WHERE ordine_code = :ordine_code AND id = :table_id'
-				,'params'	=> array('ordine_code' => $this->arOrderData['ordine_code'],'table_id' => $this->Discount['id'])
-			));
-		else:
-			$this->arOrderData['ordine_codice_sconto']['ordine_code'] 	= $this->arOrderData['ordine_code'];
-			$this->arOrderData['ordine_codice_sconto']['id_ordine'] 	= $this->orderID;
-			$this->arOrderData['ordine_codice_sconto']['id'] 			= $this->Discount['id'];
-			$this->arOrderData['ordine_codice_sconto']['date_insert'] 	= date('Y-m-d H:i:s');
-			$dataToSave = \Utility\DataUtility::MapData($this->Da->getColumns('ordine_codice_sconto'),$this->arOrderData['ordine_codice_sconto']);
-			return $this->Da->createRecord(array(
-				'table'		=> 'ordine_codice_sconto'
-				,'data'		=> $dataToSave
-				,'preserveId'	=> 1
-			));
-		endif;
-
-
-		return $to_return;
-
-	}
-
-
-
-	/**
-	* 	saveCustomOptions()
-	* 	salva le opzioni custom
-	*	@param void
-	*	@return bool true o false
-	*/
-	protected function saveCustomOptions(){
-		$to_return = true;
-		if(isset($this->arOrderData['ordine_opzioni_aggiuntive']) && is_array($this->arOrderData['ordine_opzioni_aggiuntive']) && count($this->arOrderData['ordine_opzioni_aggiuntive']) > 0):
-			foreach($this->arOrderData['ordine_opzioni_aggiuntive'] as & $CO):
-				# registro i dati
-				if($this->Da->countRecords(array(
-					'table'		=> 'ordine_opzioni_aggiuntive'
-					,'cond'		=> 'WHERE ordine_code = :ordine_code AND id = :table_id'
-					,'params'	=> array('ordine_code' => $this->arOrderData['ordine_code'],'table_id' => $CO['id'])
-				)) > 0):
-					$dataToSave = \Utility\DataUtility::MapData($this->Da->getColumns('ordine_opzioni_aggiuntive'),$CO);
-					if(!$this->Da->updateRecords(array(
-						'table'		=> 'ordine_opzioni_aggiuntive'
-						,'data'		=> $dataToSave
-						,'cond'		=> 'WHERE ordine_code = :ordine_code AND id = :table_id'
-						,'params'	=> array('ordine_code' => $this->arOrderData['ordine_code'],'table_id' => $CO['id'])
-					))):
-						$to_return = false;
-					endif;
-				else:
-					$CO['ordine_code'] 	= $this->arOrderData['ordine_code'];
-					$CO['id'] 			= $CO['id'];
-					$CO['date_insert'] 	= date('Y-m-d H:i:s');
-					$dataToSave = \Utility\DataUtility::MapData($this->Da->getColumns('ordine_opzioni_aggiuntive'),$CO);
-					if(!$this->Da->createRecord(array(
-						'table'		=> 'ordine_opzioni_aggiuntive'
-						,'data'		=> $dataToSave
-						,'preserveId'	=> 1
-					))):
-						$to_return = false;
-					endif;
-				endif;
-			endforeach;
-		endif;
-
-		return $to_return;
-	}
-
-
+	
 	/**
 	 * Verifica se elemento è presente in carrello
 	 */

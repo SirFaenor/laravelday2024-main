@@ -143,7 +143,7 @@ if(STORE_AVAILABLE === true) :
             <?php $App->Lang->echoT('page_intro_1'); ?><br>
             <?php $App->Lang->echoT('page_intro_2'); ?><br>
             <?php $App->Lang->echoT('page_intro_3'); ?><br>
-            <a href="<?php echo $App->Lang->returnL('advices') ?>"><?php echo $App->Lang->returnT('page_intro_advices_link') ?> &Gt;</a>
+            <a href="#"><?php echo $App->Lang->returnT('page_intro_advices_link') ?> &Gt;</a>
         </p>
 
         <ul class="order_steps reset">
@@ -291,53 +291,7 @@ if(count($arGroupedByCat) > 0):
     <?php
 
 
-    $discount_costs = '';
-    if(STORE_AVAILABLE && $App->User->allowed('USA_CODICE_SCONTO') && !$Discount):
-        # form per il codice sconto
-        $discount_costs .= '    <form id="check_discount" action="'.$App->Lang->returnL("cart_discount_code_add").'" autocomplete="off" novalidate>
-                                    <div class="codice_sconto_area">
-                                        
-                                        <label for="discount_code" id="discount_code_label" class="w100">'.$App->Lang->returnT('discount_code_intro').'</label> 
-                                        
-                                        <div>
-                                            <input type="text" name="discount_code" id="discount_code" required aria-required="true">
-                                            <button id="check_code" type="submit" class="btn discount_code_submit" data-role="ecomm_btn" data-type="submit">
-                                                '.$App->Lang->returnT("applica").'
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>'.PHP_EOL;
-    endif;
-
-    $other_costs = '';
-    
-    # CODICE SCONTO
-    if(STORE_AVAILABLE && $Discount = $App->Cart->getDiscount()):
-        echo '          <div class="moreinfo_box">'.PHP_EOL;
-        $partial_use = $Discount['valore_sconto'] == 'E' && $Discount['importo_sconto'] > $Discount['importo_finale'] ? true : false;
-        $other_costs .= '           <p class="codice_sconto cart_prices clearfix">
-                                        <span class="title">
-                                            '.$App->Lang->returnT('discount_code').': 
-                                            <strong>
-                                                <span class="info_btn has_tooltip">
-                                                    <abbr title="'.$App->Lang->returnT('informations').'">i</abbr>
-                                                    <span class="tooltip">'.$Discount['info'].'</span>
-                                                </span>
-                                                '.$Discount['codice'].' 
-                                                <small>(<a class="remove" data-role="ecomm_btn" href="'.$App->Lang->returnL("cart_discount_code_remove").'">'.$App->Lang->returnT("remove").'</a>)</small>
-                                            </strong>
-                                        </span>
-                                        <span class="price'.($partial_use === true ? ' warning has_tooltip right' : '').'">- '.$App->Currency->print($Discount['importo_finale']).($partial_use === true ? '<span class="custom_tooltip">'.$App->Lang->returnT('codice_sconto_partial_use_diclaimer',array('used' => $App->Currency->print($Discount['importo_finale']),'max_amount' => $App->Currency->print($Discount['importo_sconto']))).'</span>' : '').'</span>
-                                    </p>'.PHP_EOL;
-    echo '</div>';
-    endif;
-
-    $other_costs = strlen($other_costs) ? '<div class="moreinfo_box">'.PHP_EOL.$other_costs.PHP_EOL.'</div>' : '';
-
-    if(strlen($discount_costs.$other_costs)):
-        echo '  <div class="moreinfo_box other_costs clearfix">'.PHP_EOL.$discount_costs.PHP_EOL.$other_costs.'</div>'.PHP_EOL;
-    endif;
-
+   
 
 /**
  * Diff. contenuti a seconda di ordine attivo o meno
