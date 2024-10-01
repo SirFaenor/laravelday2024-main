@@ -32,20 +32,18 @@ $App->store("Da", function () use($App) {
     return new DataAccessPdo\Wrapper($pdo, $App->Config['mysql']['database']);
 });
 
-$App->Da->registerModels(require __DIR__.'/../config/project/data_models.php');
-
 
 /**
  * Connessione a database webservice per
  * @todo scrive coda mail conferma ordine
  * - scrive elenco richieste rimborsi
  */
-$App->store("DaWs", function () use($App) {
+/* $App->store("DaWs", function () use($App) {
 
     $pdo =  new PDO('mysql:host='.$App->Config['mysql_ws']['host'].';dbname='.$App->Config['mysql_ws']['database'].';charset=utf8mb4', $App->Config['mysql_ws']['user'], $App->Config['mysql_ws']['password'], array(PDO::ATTR_EMULATE_PREPARES => false, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)); 
 
     return new DataAccessPdo\Wrapper($pdo, $App->Config['mysql_ws']['database']);
-});
+}); */
 
 
 /**

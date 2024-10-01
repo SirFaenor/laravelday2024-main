@@ -83,7 +83,6 @@ $c = array(
 
     ,"newsletter"                       => require __DIR__.'/project/newsletter.php'
     
-    ,"paypal" => require __DIR__.'/project/paypal.php'
     
     /**
      * Performance/SEO

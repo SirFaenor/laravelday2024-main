@@ -334,9 +334,5 @@ $App->Page->link(array("rel" => "icon", "sizes" => "16x16 32x32 64x64", "href"=>
 $App->Page->meta(array("name" => "viewport", "content" => "width=device-width,user-scalable=yes"));
 
 
-if (empty($_COOKIE["cookie_alert"])):
-    $App->Page->prependHtml('<div id="alert_cookies" role="dialog"><div>'.$App->Lang->returnT("alert_cookies",array('cookie_setter' => '/cookie_alert.php')).'</div></div>'."\n");
-endif;
-
 
 

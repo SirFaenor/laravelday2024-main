@@ -197,15 +197,7 @@ AddType video/webm                       .webm
     # SEMPRE SLASH FINALE (protegge da doppia url e auto-redirect di apache)
     RewriteCond %{REQUEST_URI} !(/$|\.) 
     RewriteRule (.*) %{REQUEST_URI}/ [R=301,L] 
-
-
-    ######################################################################################### 
-    # dispatcher assets (per gestire manualmente gli header di queste risorse)
-    RewriteCond %{THE_REQUEST} !/area_amministrazione/([^\s?]*) [NC]
-
-    RewriteCond %{THE_REQUEST} !/area_amministrazione/([^\s?]*) [NC]
-
-       
+      
 
 
     ######################################################################################### 
@@ -224,7 +216,7 @@ AddType video/webm                       .webm
     RewriteRule ^.* - [F,L]
 
 
-    # tutti i rewrite gestiti da un dispatcher centrale!
+    # routing principale
     RewriteRule ^$    /index.php [L,QSA] 
     RewriteCond %{REQUEST_FILENAME}  !-l
     RewriteCond %{REQUEST_FILENAME}  !-d

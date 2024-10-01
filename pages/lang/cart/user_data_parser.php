@@ -67,6 +67,7 @@ endif;
 
 /**
  * messaggio risposta
+ * La risposta api contiene il link di pagamento a cui reindirizzare
  */
 $Form->arResponse['result'] = 1;
 $Form->arResponse['msg'] = $App->Lang->returnT('order_processing_msg');

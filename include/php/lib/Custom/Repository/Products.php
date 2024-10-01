@@ -9,10 +9,6 @@ use PDO;
 
 class Products extends AbsRepository  {
 
-    /**
-     * trait per caricamento gallery
-     */
-    use Traits\LoadGallery;
 
     /**
      * trait per caricamento link alternativi

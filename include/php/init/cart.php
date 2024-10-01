@@ -60,31 +60,6 @@ $App->store("CartItemFactory", function() use ($App) {
 
 
 /**
- * Paypal
- */
-$App->factory("PaypalHelper", function($negativeTestMode = 0) use ($App) {
-
-    /**
-     * Per impostare globalmente la test mode impostare la variabile env PAYPAL_NEGATIVE_TEST
-     */
-    if($negativeTestMode === 0) {
-        $negativeTestMode = (int)filter_var(getenv("PAYPAL_NEGATIVE_TEST"), FILTER_SANITIZE_NUMBER_INT);
-    }
-
-    require_once __DIR__.'/../lib/packages/atrioteam/paypal/PaypalHelper.php';
-   
-    return new AtrioTeam\Paypal\PaypalHelper(
-        $App->Config["paypal"]["username"],
-        $App->Config["paypal"]["password"],
-        $App->Config["paypal"]["signature"],
-        $App->Config["paypal"]["endpoint"],
-        $App->Config["paypal"]["url"],
-        $negativeTestMode
-    );
-});
-
-
-/**
  * Errore
  * Richiama uno script di uscita durante la procedura d'ordine
  * @param string $title titolo della pagina di errore

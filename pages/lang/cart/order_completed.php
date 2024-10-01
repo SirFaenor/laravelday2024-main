@@ -4,11 +4,7 @@ use Custom\Ecommerce\Order;
 
 $App->Lang->loadTrads("cart_global,cart_mail,errors,cart_completed,user,form");
 
-if(array_key_exists('BONIFICO_BANCARIO',$App->Cart->getPaymentMethods()) !== false):
-    require_once(DOCUMENT_ROOT."/include/php/config/project/bb.php");
-else:
-    $dati_bonifico = '';
-endif;
+$dati_bonifico = '';
 
 try {
 
