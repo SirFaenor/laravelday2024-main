@@ -1,0 +1,43 @@
+services:
+  web:
+    container_name: ${COMPOSE_PROJECT_NAME}_web
+    build:
+      context: .
+      dockerfile: docker-php.dockerfile
+      args:
+        - APACHE_RUN_USER=${COMPOSE_APACHE_RUN_USER}
+        - APACHE_RUN_GROUP=${COMPOSE_APACHE_RUN_GROUP}
+    restart: "no"
+    volumes:
+      - ".:/var/www/html"
+      - "./docker/log:/var/log/apache2"
+      - "./docker/php/php.ini:/usr/local/etc/php/conf.d/docker.ini"
+    ports:
+      - ${COMPOSE_WEB_PORT}
+    hostname: ${COMPOSE_PROJECT_NAME}.localhost
+    labels:
+      - ${COMPOSE_LABELS:-}
+  db:
+    container_name: ${COMPOSE_PROJECT_NAME}_db
+    image: mysql:5.7
+    restart: "no"
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE : ${DB_DATABASE}
+      MYSQL_USER : ${DB_USERNAME}
+      MYSQL_PASSWORD : ${DB_PASSWORD}
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+    ports:
+      - ${COMPOSE_MYSQL_PORT} 
+  phpmyadmin:
+    container_name: ${COMPOSE_PROJECT_NAME}_pma
+    image: phpmyadmin/phpmyadmin:5
+    restart: "no"
+    environment:
+      PMA_HOST: ${COMPOSE_PROJECT_NAME}_db
+      PMA_USER: root
+      PMA_PASSWORD: secret
+      UPLOAD_LIMIT : 200000000
+    ports:
+      - ${COMPOSE_PHPMYADMIN_PORT}

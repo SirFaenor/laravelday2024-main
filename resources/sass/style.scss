@@ -1,0 +1,16 @@
+/**
+ * Import css
+ * Alcuni sono css standard da prima del refactoring
+ */
+@import "_fonts.scss";
+@import "../../css/vendor/jquery-ui.min";
+@import "_base.scss";
+
+@import "../../css/animate.min";
+@import "../../css/animate.custom";
+@import "../js/vendor/fancyapps/jquery.fancybox.min";
+@import "_homepage.scss";
+
+
+@import "../js/vendor/slick/slick";
+

@@ -1,0 +1,77 @@
+/*
+********************************************************************
+*
+*   PAGINE DI TESTO (404, manutenzione, ...) # inizio #
+*
+********************************************************************
+*/
+
+.text-page #page_header { 
+    display: block; 
+    text-align: center; 
+}
+
+
+.text-page #main_wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+    .text-page #page_header {
+        height: auto;
+        padding-top: 25px;
+        padding-bottom: 25px;
+        position: relative;
+        background: none;
+    }
+    .text-page #logo { 
+        left: 0;
+        float: none;
+    }
+        .text-page #logo img { margin: 0 auto; }
+        
+    .text-page #page_content {
+        padding-top: 80px;
+        padding-bottom: 80px;
+        flex-grow: 1;
+        text-align: center;
+    }
+
+.text-page #page_footer { 
+    border: none; 
+}
+    .text-page #pf_bottom {
+        padding: 0;
+        border: none;
+        text-align: center;
+        background: none;
+        overflow: hidden;
+    }
+        .text-page #pf_bottom > * { 
+            width: 100%;
+            max-width: none; 
+            float: none;
+        }
+        
+
+@media only screen and (max-width: 680px){
+
+    .text-page #logo {
+        position: relative;
+        top: 0;
+        left: 0;
+        -webkit-transform: translate(0,0);
+           -moz-transform: translate(0,0);
+            -ms-transform: translate(0,0);
+             -o-transform: translate(0,0);
+                transform: translate(0,0);
+    }
+}
+
+/*
+--------------------------------------------------------------------
+-
+-   PAGINE DI TESTO (404, manutenzione, ...) # fine #
+-
+--------------------------------------------------------------------
+*/
